@@ -103,4 +103,12 @@ export const zh_CN = {
   'about.techStack': '技术栈',
   'about.contactMe': '联系我',
   'about.contactDesc': '如果你对我的项目感兴趣，或者想聊聊技术，欢迎通过以下方式联系我：',
+
+  'about.frontend': '前端',
+  'about.backend': '后端',
+  'about.tools': '工具',
+  'about.social.github': 'GitHub',
+  'about.social.x': 'X (Twitter)',
+  'about.social.instagram': 'Instagram',
+  'about.social.email': 'Email',
 };

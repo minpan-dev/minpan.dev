@@ -107,4 +107,12 @@ export const en_US = {
   'about.contactMe': 'Contact Me',
   'about.contactDesc':
     'If you are interested in my projects or want to chat about technology, feel free to contact me through the following ways:',
+
+  'about.frontend': 'Frontend',
+  'about.backend': 'Backend',
+  'about.tools': 'Tools',
+  'about.social.github': 'GitHub',
+  'about.social.x': 'X (Twitter)',
+  'about.social.instagram': 'Instagram',
+  'about.social.email': 'Email',
 };
