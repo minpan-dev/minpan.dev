@@ -1,0 +1,46 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import Breadcrumb from '@/components/Breadcrumb.astro';
+import { SITE } from '@/config';
+import { useTranslations, getCurrentLocale, getLangStaticPaths } from '@/utils/i18n';
+
+export const getStaticPaths = getLangStaticPaths;
+
+const locale = getCurrentLocale(Astro);
+const t = useTranslations(locale);
+
+const title = t('about.title');
+---
+
+<Layout title={`${title} | ${SITE.title}`}>
+  <Header />
+  <Breadcrumb />
+  <main id="main-content" class="app-layout">
+    <section id="about" class:list={['app-prose mb-28 max-w-app prose-img:border-0']}>
+      <p set:html={t('about.intro')} />
+      <p>{t('about.dedicated')}</p>
+
+      <h2>{t('about.whatIDo')}</h2>
+      <p>{t('about.focus')}</p>
+
+      <h2>{t('about.techStack')}</h2>
+      <ul>
+        <li><strong>前端</strong>: React, Astro, Tailwind CSS</li>
+        <li><strong>后端</strong>: Node.js, Express</li>
+        <li><strong>工具</strong>: Git, VS Code, Docker</li>
+      </ul>
+
+      <h2>{t('about.contactMe')}</h2>
+      <p>{t('about.contactDesc')}</p>
+      <ul>
+        <li><a href="https://github.com/minpan-dev">GitHub</a></li>
+        <li><a href="https://x.com/minpan1206">X (Twitter)</a></li>
+        <li><a href="https://www.instagram.com/minpan1206">Instagram</a></li>
+        <li><a href="mailto:minpan1206@gmail.com">Email</a></li>
+      </ul>
+    </section>
+  </main>
+  <Footer />
+</Layout>

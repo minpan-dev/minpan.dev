@@ -1,0 +1,67 @@
+{
+  "name": "minpan.dev",
+  "private": true,
+  "description": "Min Pan's personal blog",
+  "type": "module",
+  "scripts": {
+    "astro": "astro",
+    "build": "astro check && astro build && pagefind --site dist && cp -r dist/pagefind public/",
+    "cf-typegen": "wrangler types",
+    "check": "astro build && tsc && wrangler deploy --dry-run",
+    "deploy": "wrangler deploy",
+    "dev": "astro dev",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "prepare": "husky",
+    "preview": "astro build && wrangler dev",
+    "sync": "astro sync"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,mjs,cjs,astro}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,mdx,yml,yaml,css,scss,html}": [
+      "prettier --write"
+    ]
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "^12.6.12",
+    "@astrojs/rss": "^4.0.15",
+    "@astrojs/sitemap": "^3.7.0",
+    "@resvg/resvg-js": "^2.6.2",
+    "@tailwindcss/vite": "^4.1.18",
+    "astro": "^5.17.1",
+    "dayjs": "^1.11.19",
+    "lodash.kebabcase": "^4.1.1",
+    "remark-collapse": "^0.1.2",
+    "remark-toc": "^9.0.0",
+    "satori": "^0.18.4",
+    "sharp": "^0.34.5",
+    "slugify": "^1.6.6",
+    "tailwindcss": "^4.1.18"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.6",
+    "@pagefind/default-ui": "^1.4.0",
+    "@shikijs/transformers": "^3.22.0",
+    "@tailwindcss/typography": "^0.5.19",
+    "@types/lodash.kebabcase": "^4.1.9",
+    "@typescript-eslint/parser": "^8.54.0",
+    "eslint": "^9.39.2",
+    "eslint-plugin-astro": "^1.5.0",
+    "globals": "^16.5.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "pagefind": "^1.4.0",
+    "prettier": "^3.8.1",
+    "prettier-plugin-astro": "^0.14.1",
+    "prettier-plugin-tailwindcss": "^0.7.2",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.54.0",
+    "wrangler": "^4.63.0"
+  },
+  "packageManager": "pnpm@10.28.2"
+}

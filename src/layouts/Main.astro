@@ -1,0 +1,26 @@
+---
+import Breadcrumb from '@/components/Breadcrumb.astro';
+import { SITE } from '@/config';
+
+type Props = { pageDesc?: string };
+
+const { props } = Astro;
+
+const backUrl = SITE.showBackButton ? Astro.url.pathname : '/';
+---
+
+<Breadcrumb />
+<main data-backUrl={backUrl} id="main-content" class="app-layout pb-4">
+  <p class="mt-2 mb-6 italic">{props.pageDesc}</p>
+  <slot />
+</main>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const mainContent: HTMLElement | null = document.querySelector('#main-content');
+    const backUrl = mainContent?.dataset?.backurl;
+    if (backUrl) {
+      sessionStorage.setItem('backUrl', backUrl);
+    }
+  });
+</script>

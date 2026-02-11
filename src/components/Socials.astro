@@ -1,0 +1,25 @@
+---
+import { SOCIALS } from '@/constants';
+import LinkButton from './LinkButton.astro';
+import { useTranslations } from '@/utils/i18n';
+import { DEFAULT_LOCALE } from '@/constants';
+import type { Locale } from '@/types/i18n';
+
+const locale = (Astro.currentLocale || DEFAULT_LOCALE) as Locale;
+const t = useTranslations(locale);
+---
+
+<div class="flex flex-wrap items-center gap-1">
+  {
+    SOCIALS.map((social) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const title = t(`social.${social.name.toLowerCase()}` as any);
+      return (
+        <LinkButton href={social.href} class="p-2 hover:rotate-6 sm:p-1" title={title}>
+          <social.icon class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110" />
+          <span class="sr-only">{title}</span>
+        </LinkButton>
+      );
+    })
+  }
+</div>

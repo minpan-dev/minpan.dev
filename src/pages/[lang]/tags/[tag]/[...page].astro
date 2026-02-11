@@ -1,0 +1,62 @@
+---
+import { getCollection } from 'astro:content';
+import getUniqueTags from '@/utils/getUniqueTags';
+import getPostsByTag from '@/utils/getPostsByTag';
+import { SITE } from '@/config';
+import type { GetStaticPathsOptions } from 'astro';
+import Main from '@/layouts/Main.astro';
+import Layout from '@/layouts/Layout.astro';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import Card from '@/components/Card.astro';
+import Pagination from '@/components/Pagination.astro';
+import { useTranslations, getCurrentLocale } from '@/utils/i18n';
+import { LOCALE_LIST } from '@/constants';
+
+export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
+  const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+
+  return LOCALE_LIST.flatMap((lang) => {
+    // 语言合并逻辑
+    const postsMap = new Map();
+    allPosts.forEach((post) => {
+      const baseId = post.id.replace(new RegExp(`^(${LOCALE_LIST.join('|')})\\/`, 'i'), '');
+      if (!postsMap.has(baseId) || post.id.toLowerCase().startsWith(`${lang.toLowerCase()}/`)) {
+        postsMap.set(baseId, post);
+      }
+    });
+
+    const posts = Array.from(postsMap.values());
+    const tags = getUniqueTags(posts);
+
+    return tags.flatMap(({ tag, tagName }) => {
+      const tagPosts = getPostsByTag(posts, tag);
+
+      return paginate(tagPosts, {
+        params: { lang, tag },
+        props: { tagName },
+        pageSize: SITE.postPerPage,
+      });
+    });
+  });
+}
+
+import type { CollectionEntry } from 'astro:content';
+
+const locale = getCurrentLocale(Astro);
+const { page, tagName } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<Layout title={`${t('tags.tagLabel')} ${tagName} | ${t('site.title')}`}>
+  <Header />
+  <Main pageDesc={`${t('tags.pageDesc')} "${tagName}".`}>
+    <ul>
+      {page.data.map((data: CollectionEntry<'blog'>) => <Card {...data} />)}
+    </ul>
+  </Main>
+
+  <Pagination {page} />
+
+  <Footer noMarginTop={page.lastPage > 1} />
+</Layout>

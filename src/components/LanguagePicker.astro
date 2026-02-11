@@ -1,0 +1,148 @@
+---
+import { getLocaleLabel, getLocalePaths, getCurrentLocale } from '@/utils/i18n';
+
+const locale = getCurrentLocale(Astro);
+const localePaths = getLocalePaths(Astro.url);
+---
+
+<div class="locale-picker group relative inline-block w-full text-center sm:w-auto sm:text-left">
+  <button
+    type="button"
+    class="locale-picker-btn flex w-full items-center justify-center gap-1.5 px-4 py-3 text-sm font-medium transition-all duration-200 hover:text-accent focus:outline-none sm:w-auto sm:px-2 sm:py-1"
+    aria-haspopup="true"
+    aria-expanded="false"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="size-4.5 opacity-80"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.75"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="2" y1="12" x2="22" y2="12"></line>
+      <path
+        d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+      ></path>
+    </svg>
+    <span class="hidden sm:inline">{getLocaleLabel(locale)}</span>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="locale-picker-arrow size-4 opacity-50 transition-transform duration-200 group-hover:opacity-100 sm:group-hover:rotate-180"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="m6 9 6 6 6-6"></path>
+    </svg>
+  </button>
+
+  <div
+    class:list={[
+      'locale-picker-menu z-50 overflow-hidden sm:absolute sm:right-0 sm:mt-2 sm:min-w-[130px] sm:origin-top-right',
+      'transition-all duration-200 ease-out',
+      'max-sm:max-h-0 max-sm:opacity-0',
+      'sm:invisible sm:translate-y-1 sm:opacity-0 sm:group-hover:visible sm:group-hover:translate-y-0 sm:group-hover:opacity-100',
+    ]}
+    role="menu"
+  >
+    <div
+      class="space-y-1 py-1.5 shadow-xl sm:rounded-xl sm:border sm:border-border sm:bg-background/95 sm:backdrop-blur-md"
+    >
+      {
+        localePaths.map((item) => (
+          <a
+            href={item.path}
+            class:list={[
+              'flex items-center justify-between px-4 py-2 text-[13px] transition-colors',
+              item.locale === locale
+                ? 'bg-accent/5 font-semibold text-accent'
+                : 'text-foreground/70 hover:bg-muted hover:text-accent',
+            ]}
+            role="menuitem"
+            data-locale={item.locale}
+          >
+            <span>{getLocaleLabel(item.locale)}</span>
+            {item.locale === locale && (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="size-3.5 text-accent"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            )}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</div>
+
+<script>
+  function initLangPicker() {
+    const pickers = document.querySelectorAll('.locale-picker');
+
+    pickers.forEach((picker) => {
+      const btn = picker.querySelector('.locale-picker-btn');
+      const menu = picker.querySelector('.locale-picker-menu');
+      const arrow = picker.querySelector('.locale-picker-arrow');
+      const items = picker.querySelectorAll('a[role="menuitem"]');
+
+      if (!btn || !menu || !arrow) return;
+
+      // Save preference on click
+      items.forEach((item) => {
+        item.addEventListener('click', () => {
+          const newLang = (item as HTMLElement).dataset.locale;
+          if (newLang) {
+            localStorage.setItem('selectedLang', newLang);
+          }
+        });
+      });
+
+      // Handle mobile toggle
+      const toggleMenu = (e: Event) => {
+        if (window.innerWidth >= 640) return;
+
+        e.stopPropagation();
+        const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+        const nextState = !isExpanded;
+
+        btn.setAttribute('aria-expanded', String(nextState));
+        (menu as HTMLElement).style.maxHeight = nextState ? '200px' : '0';
+        (menu as HTMLElement).style.opacity = nextState ? '1' : '0';
+        (menu as HTMLElement).style.marginTop = nextState ? '0.5rem' : '0';
+        (arrow as HTMLElement).style.transform = nextState ? 'rotate(180deg)' : 'rotate(0deg)';
+      };
+
+      btn.addEventListener('click', toggleMenu);
+
+      // Close menu when clicking outside (mobile)
+      document.addEventListener('click', (e) => {
+        if (!picker.contains(e.target as Node) && btn.getAttribute('aria-expanded') === 'true') {
+          btn.setAttribute('aria-expanded', 'false');
+          (menu as HTMLElement).style.maxHeight = '0';
+          (menu as HTMLElement).style.opacity = '0';
+          (arrow as HTMLElement).style.transform = 'rotate(0deg)';
+        }
+      });
+    });
+  }
+
+  // Initial load
+  initLangPicker();
+  // View Transitions support
+  document.addEventListener('astro:after-swap', initLangPicker);
+</script>

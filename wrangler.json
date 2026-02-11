@@ -1,0 +1,14 @@
+{
+  "name": "minpan.dev",
+  "compatibility_date": "2025-10-08",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "assets": {
+    "directory": "./dist"
+  },
+  "observability": {
+    "enabled": true
+  },
+  "upload_source_maps": true
+}

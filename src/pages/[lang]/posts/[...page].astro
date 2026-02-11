@@ -1,0 +1,60 @@
+---
+import type { GetStaticPathsOptions } from 'astro';
+import { getCollection } from 'astro:content';
+import getSortedPosts from '@/utils/getSortedPosts';
+import { SITE } from '@/config';
+import Main from '@/layouts/Main.astro';
+import Layout from '@/layouts/Layout.astro';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import Card from '@/components/Card.astro';
+import Pagination from '@/components/Pagination.astro';
+import { useTranslations, getCurrentLocale, getStaticLocales } from '@/utils/i18n';
+import { DEFAULT_LOCALE, LOCALE_LIST } from '@/constants';
+
+export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
+  const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+
+  return getStaticLocales().flatMap((lang) => {
+    let posts;
+    if (lang.toLowerCase() === DEFAULT_LOCALE.toLowerCase()) {
+      posts = allPosts.filter((post) =>
+        post.id.toLowerCase().startsWith(`${DEFAULT_LOCALE.toLowerCase()}/`),
+      );
+    } else {
+      const postsMap = new Map();
+      allPosts.forEach((post) => {
+        const baseId = post.id.replace(new RegExp(`^(${LOCALE_LIST.join('|')})\\/`, 'i'), '');
+        if (!postsMap.has(baseId) || post.id.toLowerCase().startsWith(`${lang.toLowerCase()}/`)) {
+          postsMap.set(baseId, post);
+        }
+      });
+      posts = Array.from(postsMap.values());
+    }
+
+    return paginate(getSortedPosts(posts), {
+      params: { lang },
+      pageSize: SITE.postPerPage,
+    });
+  });
+}
+
+import type { CollectionEntry } from 'astro:content';
+
+const { page } = Astro.props;
+const locale = getCurrentLocale(Astro);
+const t = useTranslations(locale);
+---
+
+<Layout title={`Posts | ${t('site.title')}`}>
+  <Header />
+  <Main pageDesc={t('posts.pageDesc')}>
+    <ul>
+      {page.data.map((data: CollectionEntry<'blog'>) => <Card {...data} />)}
+    </ul>
+  </Main>
+
+  <Pagination {page} />
+
+  <Footer noMarginTop={page.lastPage > 1} />
+</Layout>

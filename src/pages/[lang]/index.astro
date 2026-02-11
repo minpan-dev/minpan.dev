@@ -1,0 +1,141 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '@/layouts/Layout.astro';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import Socials from '@/components/Socials.astro';
+import LinkButton from '@/components/LinkButton.astro';
+import Card from '@/components/Card.astro';
+import getSortedPosts from '@/utils/getSortedPosts';
+import IconRss from '@/assets/icons/IconRss.svg';
+import IconArrowRight from '@/assets/icons/IconArrowRight.svg';
+import { SITE } from '@/config';
+import { DEFAULT_LOCALE, LOCALE_LIST, SOCIALS } from '@/constants';
+import {
+  useTranslations,
+  getCurrentLocale,
+  getLangStaticPaths,
+  getLocalizedHref,
+} from '@/utils/i18n';
+
+export const getStaticPaths = getLangStaticPaths;
+
+const locale = getCurrentLocale(Astro);
+const t = useTranslations(locale);
+
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+
+let posts;
+if (locale === DEFAULT_LOCALE) {
+  posts = allPosts.filter((post) =>
+    post.id.toLowerCase().startsWith(`${DEFAULT_LOCALE.toLowerCase()}/`),
+  );
+} else {
+  const postsMap = new Map();
+  allPosts.forEach((post) => {
+    const baseId = post.id.replace(new RegExp(`^(${LOCALE_LIST.join('|')})\\/`, 'i'), '');
+    if (!postsMap.has(baseId) || post.id.startsWith(`${locale}/`)) {
+      postsMap.set(baseId, post);
+    }
+  });
+  posts = Array.from(postsMap.values());
+}
+
+const sortedPosts = getSortedPosts(posts);
+const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
+const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
+---
+
+<Layout>
+  <Header />
+  <main id="main-content" data-layout="index" class="app-layout">
+    <section id="hero" class:list={['pt-8 pb-6', 'border-b border-border']}>
+      <h1 class="my-4 inline-block text-3xl font-bold break-words sm:my-8 sm:text-5xl">
+        {t('hero.greeting')}
+      </h1>
+      <a
+        target="_blank"
+        href="/rss.xml"
+        class="inline-block"
+        aria-label={t('hero.rss')}
+        title={t('hero.rss')}
+      >
+        <IconRss width={20} height={20} class="scale-125 stroke-accent stroke-3 rtl:-rotate-90" />
+        <span class="sr-only">{t('hero.rss')}</span>
+      </a>
+
+      <p>{t('hero.desc')}</p>
+      <p class="mt-2">
+        {t('hero.welcome')}
+        <LinkButton
+          class="underline decoration-dashed underline-offset-4 hover:text-accent"
+          href={getLocalizedHref(locale, 'posts')}
+        >
+          {t('hero.checkPosts')}
+        </LinkButton>
+        {t('hero.or')}
+        <LinkButton
+          class="underline decoration-dashed underline-offset-4 hover:text-accent"
+          href={getLocalizedHref(locale, 'about')}
+        >
+          {t('hero.aboutPage')}
+        </LinkButton>
+        {t('hero.learnMore')}
+      </p>
+      {
+        SOCIALS.length > 0 && (
+          <div class="mt-4 flex max-sm:flex-col sm:items-center">
+            <div class="me-2 mb-1 whitespace-nowrap sm:mb-0">{t('hero.socialLinks')}</div>
+            <Socials />
+          </div>
+        )
+      }
+    </section>
+
+    {
+      featuredPosts.length > 0 && (
+        <section
+          id="featured"
+          class:list={['pt-12 pb-6', { 'border-b border-border': recentPosts.length > 0 }]}
+        >
+          <h2 class="text-2xl font-semibold tracking-wide">{t('home.featured')}</h2>
+          <ul>
+            {featuredPosts.map((data) => (
+              <Card variant="h3" {...data} />
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    {
+      recentPosts.length > 0 && (
+        <section id="recent-posts" class="pt-12 pb-6">
+          <h2 class="text-2xl font-semibold tracking-wide">{t('home.recent')}</h2>
+          <ul>
+            {recentPosts.map(
+              (data, index) => index < SITE.postPerIndex && <Card variant="h3" {...data} />,
+            )}
+          </ul>
+        </section>
+      )
+    }
+
+    <div class="my-8 text-center">
+      <LinkButton href={getLocalizedHref(locale, 'posts')}>
+        {t('home.allPosts')}
+        <IconArrowRight class="inline-block rtl:-rotate-180" />
+      </LinkButton>
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const indexLayout = (document.querySelector('#main-content') as HTMLElement)?.dataset?.layout;
+    if (indexLayout) {
+      sessionStorage.setItem('backUrl', '/');
+    }
+  });
+</script>

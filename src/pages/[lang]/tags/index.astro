@@ -1,0 +1,46 @@
+---
+import { getCollection } from 'astro:content';
+import Main from '@/layouts/Main.astro';
+import Layout from '@/layouts/Layout.astro';
+import Tag from '@/components/Tag.astro';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import getUniqueTags from '@/utils/getUniqueTags';
+import { useTranslations, getCurrentLocale, getLangStaticPaths } from '@/utils/i18n';
+import { LOCALE_LIST, DEFAULT_LOCALE } from '@/constants';
+
+export const getStaticPaths = getLangStaticPaths;
+
+const locale = getCurrentLocale(Astro);
+const t = useTranslations(locale);
+
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+
+let posts;
+if (locale === DEFAULT_LOCALE) {
+  posts = allPosts.filter((post) =>
+    post.id.toLowerCase().startsWith(`${DEFAULT_LOCALE.toLowerCase()}/`),
+  );
+} else {
+  const postsMap = new Map();
+  allPosts.forEach((post) => {
+    const baseId = post.id.replace(new RegExp(`^(${LOCALE_LIST.join('|')})\\/`, 'i'), '');
+    if (!postsMap.has(baseId) || post.id.startsWith(`${locale}/`)) {
+      postsMap.set(baseId, post);
+    }
+  });
+  posts = Array.from(postsMap.values());
+}
+
+let tags = getUniqueTags(posts);
+---
+
+<Layout title={`Tags | ${t('site.title')}`}>
+  <Header />
+  <Main pageDesc={t('tags.pageDesc')}>
+    <ul class="flex flex-wrap gap-6">
+      {tags.map(({ tag, tagName }) => <Tag tag={tag} tagName={tagName} />)}
+    </ul>
+  </Main>
+  <Footer />
+</Layout>

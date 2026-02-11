@@ -1,0 +1,60 @@
+---
+import { DEFAULT_LOCALE, LOCALE_OPTIONS } from '@/constants';
+import { getLocalePaths } from '@/utils/i18n';
+
+const langs = LOCALE_OPTIONS.map((option) => option.locale.toLowerCase());
+const baseUrl = import.meta.env.PROD ? Astro.site?.pathname || '/' : '/';
+const defaultLocale = DEFAULT_LOCALE.toLowerCase();
+---
+
+<!doctype html>
+<html lang={DEFAULT_LOCALE}>
+  <head>
+    <meta charset="UTF-8" />
+    <title>redirect...</title>
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta name="generator" content={Astro.generator} />
+    {
+      getLocalePaths(Astro.url).map((props) => (
+        <link
+          rel="alternate"
+          hreflang={props.locale}
+          href={new URL(props.path, Astro.site || Astro.url)}
+        />
+      ))
+    }
+    <noscript>
+      <meta http-equiv="refresh" content={`0;url=${baseUrl + defaultLocale}/`} />
+    </noscript>
+
+    <script is:inline define:vars={{ langs, baseUrl, defaultLocale }}>
+      const findLocale = (lang) => {
+        if (!lang) return null;
+        const lowerLang = lang.toLowerCase();
+        // Match exact or base (e.g. en-US or en)
+        return (
+          langs.find((l) => l.toLowerCase() === lowerLang) ||
+          langs.find((l) => l.toLowerCase() === lowerLang.split('-')[0])
+        );
+      };
+
+      const savedLang = localStorage.selectedLang;
+      const browserLang = navigator.language;
+
+      const targetLang = findLocale(savedLang) || findLocale(browserLang) || defaultLocale;
+
+      // Construct clean URL
+      const cleanBase = baseUrl.endsWith('/') ? baseUrl : baseUrl + '/';
+      location.href = `${cleanBase}${targetLang}/`;
+    </script>
+  </head>
+  <body style="background: #fdfdfd;">
+    <h1>redirect...</h1>
+    <script is:inline>
+      // 保持暗色模式背景一致，减少闪烁
+      if (localStorage.getItem('theme') === 'dark') {
+        document.body.style.background = '#212737';
+      }
+    </script>
+  </body>
+</html>

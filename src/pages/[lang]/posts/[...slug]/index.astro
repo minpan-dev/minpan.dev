@@ -1,0 +1,40 @@
+---
+import { getCollection } from 'astro:content';
+import PostDetails from '@/layouts/PostDetails.astro';
+import { getPath } from '@/utils/getPath';
+import getSortedPosts from '@/utils/getSortedPosts';
+import { LOCALE_LIST } from '@/constants';
+
+import { getStaticLocales } from '@/utils/i18n';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+
+  return getStaticLocales().flatMap((lang) => {
+    // 语言合并逻辑 (使用不区分大小写的匹配来查找当前语言的文章)
+    const postsMap = new Map();
+    allPosts.forEach((post) => {
+      const baseId = post.id.replace(new RegExp(`^(${LOCALE_LIST.join('|')})\\/`, 'i'), '');
+      if (!postsMap.has(baseId) || post.id.toLowerCase().startsWith(`${lang.toLowerCase()}/`)) {
+        postsMap.set(baseId, post);
+      }
+    });
+
+    const currentLangPosts = Array.from(postsMap.values());
+    const sortedPosts = getSortedPosts(currentLangPosts);
+
+    // 只有当该文章在当前语言列表（包含回退）中存在时，才生成路由
+    return currentLangPosts.map((post) => ({
+      params: {
+        lang,
+        slug: getPath(post.id, post.filePath, false),
+      },
+      props: { post, posts: sortedPosts },
+    }));
+  });
+}
+
+const { post, posts } = Astro.props;
+---
+
+<PostDetails post={post} posts={posts} />
