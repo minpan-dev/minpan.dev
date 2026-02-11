@@ -7,17 +7,22 @@ import IconTelegram from './assets/icons/IconTelegram.svg';
 import IconPinterest from './assets/icons/IconPinterest.svg';
 import IconInstagram from './assets/icons/IconInstagram.svg';
 
-import type { Locale, LocaleConfig } from './types/i18n';
 import type { Social } from './types/config';
 
-export const DEFAULT_LOCALE: Locale = 'zh-CN';
+export const LOCALES_SETTING = {
+  'zh-cn': {
+    label: '简体中文',
+    lang: 'zh-CN',
+  },
+  'en-us': {
+    label: 'English',
+    lang: 'en-US',
+  },
+} as const;
 
-export const LOCALE_OPTIONS: readonly LocaleConfig[] = [
-  { locale: 'zh-CN', label: '简体中文', dir: 'ltr' },
-  { locale: 'en-US', label: 'English', dir: 'ltr' },
-];
+export const DEFAULT_LOCALE = 'zh-cn';
 
-export const LOCALE_LIST: Locale[] = ['zh-CN', 'en-US'];
+export const LOCALE_LIST = Object.keys(LOCALES_SETTING) as (keyof typeof LOCALES_SETTING)[];
 
 export const SOCIALS: Social[] = [
   {

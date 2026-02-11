@@ -1,14 +1,14 @@
 ---
-import { DEFAULT_LOCALE, LOCALE_OPTIONS } from '@/constants';
+import { DEFAULT_LOCALE, LOCALES_SETTING } from '@/constants';
 import { getLocalePaths } from '@/utils/i18n';
 
-const langs = LOCALE_OPTIONS.map((option) => option.locale.toLowerCase());
+const langs = Object.keys(LOCALES_SETTING);
 const baseUrl = import.meta.env.PROD ? Astro.site?.pathname || '/' : '/';
-const defaultLocale = DEFAULT_LOCALE.toLowerCase();
+const defaultLocale = DEFAULT_LOCALE;
 ---
 
 <!doctype html>
-<html lang={DEFAULT_LOCALE}>
+<html lang={LOCALES_SETTING[DEFAULT_LOCALE].lang}>
   <head>
     <meta charset="UTF-8" />
     <title>redirect...</title>

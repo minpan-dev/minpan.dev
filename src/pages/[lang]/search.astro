@@ -5,9 +5,9 @@ import Layout from '@/layouts/Layout.astro';
 import Header from '@/components/Header.astro';
 import Footer from '@/components/Footer.astro';
 import { SITE } from '@/config';
-import { useTranslations, getCurrentLocale, getLangStaticPaths } from '@/utils/i18n';
+import { useTranslations, getCurrentLocale, getLocaleStaticPaths } from '@/utils/i18n';
 
-export const getStaticPaths = getLangStaticPaths;
+export const getStaticPaths = getLocaleStaticPaths;
 
 const locale = getCurrentLocale(Astro);
 const t = useTranslations(locale);

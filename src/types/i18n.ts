@@ -1,11 +1,12 @@
-import type { zh_CN } from '../i18n/zh-CN';
+import type { zh_cn } from '../i18n/zh-cn';
 
-export type Locale = 'en-US' | 'zh-CN';
+import { LOCALES_SETTING } from '../constants';
+
+export type Locale = keyof typeof LOCALES_SETTING;
 
 export interface LocaleConfig {
-  locale: Locale;
   label: string;
-  dir: 'ltr' | 'rtl';
+  lang: string;
 }
 
 export type LocalePath = {
@@ -13,5 +14,5 @@ export type LocalePath = {
   path: string;
 };
 
-export type TranslationDict = typeof zh_CN;
+export type TranslationDict = typeof zh_cn;
 export type TranslationKey = keyof TranslationDict;

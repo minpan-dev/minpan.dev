@@ -22,8 +22,8 @@ const locale = getCurrentLocale(Astro);
 const t = useTranslations(locale);
 
 const localeConfig = getLocaleConfig(locale);
-const htmlLang = localeConfig.locale || locale;
-const htmlDir = localeConfig.dir || SITE.dir;
+const htmlLang = localeConfig.lang || locale;
+const htmlDir = SITE.dir;
 
 // Ensure canonical URL uses the standard locale case
 const standardPathname = Astro.url.pathname.replace(

@@ -1,4 +1,4 @@
-export const zh_CN = {
+export const zh_cn = {
   'site.title': 'Min Pan',
   'site.author': 'Min Pan',
   'site.desc': 'Min Pan 的个人博客，分享技术、生活与思考。',

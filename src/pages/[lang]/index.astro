@@ -14,11 +14,11 @@ import { DEFAULT_LOCALE, LOCALE_LIST, SOCIALS } from '@/constants';
 import {
   useTranslations,
   getCurrentLocale,
-  getLangStaticPaths,
+  getLocaleStaticPaths,
   getLocalizedHref,
 } from '@/utils/i18n';
 
-export const getStaticPaths = getLangStaticPaths;
+export const getStaticPaths = getLocaleStaticPaths;
 
 const locale = getCurrentLocale(Astro);
 const t = useTranslations(locale);

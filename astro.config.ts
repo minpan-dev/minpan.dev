@@ -10,7 +10,7 @@ import {
 } from '@shikijs/transformers';
 import { transformerFileName } from './src/utils/transformers/fileName';
 import { SITE } from './src/config';
-import { DEFAULT_LOCALE, LOCALE_OPTIONS } from './src/constants';
+import { DEFAULT_LOCALE, LOCALES_SETTING } from './src/constants';
 
 // https://astro.build/config
 export default defineConfig({
@@ -50,8 +50,8 @@ export default defineConfig({
     layout: 'constrained',
   },
   i18n: {
-    defaultLocale: DEFAULT_LOCALE.toLowerCase(),
-    locales: LOCALE_OPTIONS.map((option) => option.locale.toLowerCase()),
+    defaultLocale: DEFAULT_LOCALE,
+    locales: Object.keys(LOCALES_SETTING),
     routing: {
       prefixDefaultLocale: true,
       redirectToDefaultLocale: false,

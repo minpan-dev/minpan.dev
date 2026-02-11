@@ -1,5 +1,5 @@
 import { getRelativeLocaleUrl } from 'astro:i18n';
-import { DEFAULT_LOCALE, LOCALE_OPTIONS } from '@/constants';
+import { DEFAULT_LOCALE, LOCALES_SETTING } from '@/constants';
 import type {
   Locale,
   LocaleConfig,
@@ -7,12 +7,12 @@ import type {
   TranslationDict,
   TranslationKey,
 } from '@/types/i18n';
-import { zh_CN } from '../i18n/zh-CN';
-import { en_US } from '../i18n/en-US';
+import { zh_cn } from '../i18n/zh-cn';
+import { en_us } from '../i18n/en-us';
 
-const dictionaries: Record<string, TranslationDict> = {
-  'zh-CN': zh_CN,
-  'en-US': en_US as TranslationDict,
+const dictionaries: Record<Locale, TranslationDict> = {
+  'zh-cn': zh_cn,
+  'en-us': en_us as TranslationDict,
 };
 
 /**
@@ -21,9 +21,9 @@ const dictionaries: Record<string, TranslationDict> = {
  * @returns
  */
 function getDictionary(locale: string): TranslationDict {
-  const normalizedLocale =
-    LOCALE_OPTIONS.find((opt) => opt.locale.toLowerCase() === locale.toLowerCase())?.locale ||
-    DEFAULT_LOCALE;
+  const normalizedLocale = Object.keys(LOCALES_SETTING).includes(locale)
+    ? (locale as Locale)
+    : DEFAULT_LOCALE;
 
   return dictionaries[normalizedLocale] || dictionaries[DEFAULT_LOCALE];
 }
@@ -34,10 +34,10 @@ function getDictionary(locale: string): TranslationDict {
  * @returns
  */
 export const getLocaleConfig = (locale: string): LocaleConfig => {
-  return (
-    LOCALE_OPTIONS.find((option) => option.locale.toLowerCase() === locale.toLowerCase()) ??
-    LOCALE_OPTIONS[0]
-  );
+  if (Object.keys(LOCALES_SETTING).includes(locale)) {
+    return LOCALES_SETTING[locale as Locale];
+  }
+  return LOCALES_SETTING[DEFAULT_LOCALE];
 };
 
 /**
@@ -46,10 +46,10 @@ export const getLocaleConfig = (locale: string): LocaleConfig => {
  * @returns
  */
 export const getLocaleLabel = (locale: string): string => {
-  return (
-    LOCALE_OPTIONS.find((option) => option.locale.toLowerCase() === locale.toLowerCase())?.label ??
-    locale
-  );
+  if (Object.keys(LOCALES_SETTING).includes(locale)) {
+    return LOCALES_SETTING[locale as Locale].label;
+  }
+  return locale;
 };
 
 /**
@@ -69,26 +69,26 @@ export function getCurrentLocale(astro: { currentLocale?: string; url?: URL }): 
 
   if (!rawLocale) return DEFAULT_LOCALE;
 
-  // 3. Always normalize to the standard case from LOCALE_OPTIONS
-  const matchedLocale = LOCALE_OPTIONS.find(
-    (opt) => opt.locale.toLowerCase() === rawLocale!.toLowerCase(),
+  // 3. Always normalize to the standard case from LOCALES_SETTING
+  const matchedLocale = Object.keys(LOCALES_SETTING).find(
+    (l) => l.toLowerCase() === rawLocale!.toLowerCase(),
   );
 
-  return matchedLocale ? matchedLocale.locale : DEFAULT_LOCALE;
+  return matchedLocale ? (matchedLocale as Locale) : DEFAULT_LOCALE;
 }
 
 /**
  * Get all possible locale strings for static paths (ONLY lowercase for URLs)
  */
 export function getStaticLocales(): string[] {
-  return LOCALE_OPTIONS.map((option) => option.locale.toLowerCase());
+  return Object.keys(LOCALES_SETTING);
 }
 
 /**
  * Get static paths for simple i18n routes that only need the lang parameter
  * @returns Array of path objects
  */
-export function getLangStaticPaths() {
+export function getLocaleStaticPaths() {
   return getStaticLocales().map((lang) => ({ params: { lang } }));
 }
 
@@ -117,7 +117,7 @@ export function useTranslations(locale: string) {
  * Remove locale prefix from pathname
  */
 export function stripLocalePrefix(pathname: string): string {
-  const langs = LOCALE_OPTIONS.map((option) => option.locale);
+  const langs = Object.keys(LOCALES_SETTING);
   const regex = new RegExp(`^/(${langs.join('|')})(/|$)`, 'i');
 
   return pathname.replace(regex, '/').replace(/\/+$/, '') || '/';
@@ -146,8 +146,8 @@ export function getLocalePaths(url: URL): LocalePath[] {
   // Ensure we don't pass a leading slash if it's not the root
   const cleanPath = pathWithoutLocale === '/' ? '' : pathWithoutLocale.replace(/^\/+/, '');
 
-  return LOCALE_OPTIONS.map(({ locale }) => ({
-    locale,
+  return Object.keys(LOCALES_SETTING).map((locale) => ({
+    locale: locale as Locale,
     path: getLocalizedHref(locale, cleanPath),
   }));
 }
