@@ -1,4 +1,4 @@
-export const en_us = {
+export const en_US = {
   'site.title': 'Min Pan',
   'site.author': 'Min Pan',
   'site.desc': "Min Pan's personal blog, sharing tech, life and thoughts.",

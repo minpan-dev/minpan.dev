@@ -1,19 +1,23 @@
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import { DEFAULT_LOCALE, LOCALES_SETTING } from '@/constants';
-import type {
-  Locale,
-  LocaleConfig,
-  LocalePath,
-  TranslationDict,
-  TranslationKey,
-} from '@/types/i18n';
-import { zh_cn } from '../i18n/zh-cn';
-import { en_us } from '../i18n/en-us';
+import type { Locale, LocalePath, TranslationDict, TranslationKey } from '@/types/i18n';
+import { zh_CN } from '../i18n/zh-CN';
+import { en_US } from '../i18n/en-US';
 
 const dictionaries: Record<Locale, TranslationDict> = {
-  'zh-cn': zh_cn,
-  'en-us': en_us as TranslationDict,
+  'zh-CN': zh_CN,
+  'en-US': en_US as TranslationDict,
 };
+
+/**
+ * Helper to normalize locale code to the standard case (e.g., 'en-us' -> 'en-US')
+ */
+export function normalizeLocale(locale: string): Locale {
+  const matchedLocale = Object.keys(LOCALES_SETTING).find(
+    (l) => l.toLowerCase() === locale.toLowerCase(),
+  );
+  return matchedLocale ? (matchedLocale as Locale) : DEFAULT_LOCALE;
+}
 
 /**
  * Helper to get the translation dictionary based on the language code
@@ -21,24 +25,9 @@ const dictionaries: Record<Locale, TranslationDict> = {
  * @returns
  */
 function getDictionary(locale: string): TranslationDict {
-  const normalizedLocale = Object.keys(LOCALES_SETTING).includes(locale)
-    ? (locale as Locale)
-    : DEFAULT_LOCALE;
-
+  const normalizedLocale = normalizeLocale(locale);
   return dictionaries[normalizedLocale] || dictionaries[DEFAULT_LOCALE];
 }
-
-/**
- * Helper to get the locale configuration based on the language code
- * @param locale
- * @returns
- */
-export const getLocaleConfig = (locale: string): LocaleConfig => {
-  if (Object.keys(LOCALES_SETTING).includes(locale)) {
-    return LOCALES_SETTING[locale as Locale];
-  }
-  return LOCALES_SETTING[DEFAULT_LOCALE];
-};
 
 /**
  * Helper to get the locale label based on the language code
@@ -46,10 +35,8 @@ export const getLocaleConfig = (locale: string): LocaleConfig => {
  * @returns
  */
 export const getLocaleLabel = (locale: string): string => {
-  if (Object.keys(LOCALES_SETTING).includes(locale)) {
-    return LOCALES_SETTING[locale as Locale].label;
-  }
-  return locale;
+  const normalizedLocale = normalizeLocale(locale);
+  return LOCALES_SETTING[normalizedLocale];
 };
 
 /**
@@ -70,11 +57,7 @@ export function getCurrentLocale(astro: { currentLocale?: string; url?: URL }): 
   if (!rawLocale) return DEFAULT_LOCALE;
 
   // 3. Always normalize to the standard case from LOCALES_SETTING
-  const matchedLocale = Object.keys(LOCALES_SETTING).find(
-    (l) => l.toLowerCase() === rawLocale!.toLowerCase(),
-  );
-
-  return matchedLocale ? (matchedLocale as Locale) : DEFAULT_LOCALE;
+  return normalizeLocale(rawLocale);
 }
 
 /**
@@ -107,8 +90,10 @@ export function useTranslations(locale: string) {
       return (dictionary as Record<string, any>)[multilingual] || multilingual;
     } else {
       // Find matching locale in the Record (case-insensitive)
+      // Find matching locale in the Record (case-insensitive)
       const key = Object.keys(multilingual).find((k) => k.toLowerCase() === locale.toLowerCase());
-      return key ? multilingual[key] : multilingual[DEFAULT_LOCALE] || '';
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return key ? (multilingual as any)[key] : (multilingual as any)[DEFAULT_LOCALE] || '';
     }
   };
 }
@@ -135,7 +120,8 @@ export function getBreadcrumbList(pathname: string): string[] {
  * Get localized href with lowercase locale (for URL consistency)
  */
 export function getLocalizedHref(locale: string, path: string): string {
-  return getRelativeLocaleUrl(locale.toLowerCase(), path);
+  const url = getRelativeLocaleUrl(locale, path);
+  return url.replace(new RegExp(`^/${locale.toLowerCase()}`), `/${locale}`);
 }
 
 /**

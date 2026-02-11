@@ -4,7 +4,7 @@ import { ClientRouter } from 'astro:transitions';
 import { PUBLIC_GOOGLE_SITE_VERIFICATION } from 'astro:env/client';
 import { SITE } from '@/config';
 import '@/styles/global.css';
-import { getLocaleConfig, useTranslations, getCurrentLocale, getLocalePaths } from '@/utils/i18n';
+import { useTranslations, getCurrentLocale, getLocalePaths } from '@/utils/i18n';
 
 type Props = {
   title?: string;
@@ -21,8 +21,7 @@ type Props = {
 const locale = getCurrentLocale(Astro);
 const t = useTranslations(locale);
 
-const localeConfig = getLocaleConfig(locale);
-const htmlLang = localeConfig.lang || locale;
+const htmlLang = locale;
 const htmlDir = SITE.dir;
 
 // Ensure canonical URL uses the standard locale case

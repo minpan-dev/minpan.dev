@@ -10,17 +10,11 @@ import IconInstagram from './assets/icons/IconInstagram.svg';
 import type { Social } from './types/config';
 
 export const LOCALES_SETTING = {
-  'zh-cn': {
-    label: '简体中文',
-    lang: 'zh-CN',
-  },
-  'en-us': {
-    label: 'English',
-    lang: 'en-US',
-  },
+  'zh-CN': '中文（简体）',
+  'en-US': 'English (US)',
 } as const;
 
-export const DEFAULT_LOCALE = 'zh-cn';
+export const DEFAULT_LOCALE = 'zh-CN';
 
 export const LOCALE_LIST = Object.keys(LOCALES_SETTING) as (keyof typeof LOCALES_SETTING)[];
 
