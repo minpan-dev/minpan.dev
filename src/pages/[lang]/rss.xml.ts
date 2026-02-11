@@ -29,7 +29,7 @@ export async function GET({ params }: APIContext) {
     description: t(SITE.desc),
     site: SITE.website,
     items: sortedPosts.map(({ data, id, filePath }) => ({
-      link: getRelativeLocaleUrl(locale.toLowerCase(), getPath(id, filePath)),
+      link: getRelativeLocaleUrl(locale, getPath(id, filePath)),
       title: data.title,
       description: data.description,
       pubDate: new Date(data.modDatetime ?? data.pubDatetime),
