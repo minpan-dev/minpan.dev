@@ -1,5 +1,5 @@
 {
-  "name": "blog-minpan-dev",
+  "name": "blog",
   "private": true,
   "description": "Min Pan's personal blog",
   "type": "module",
