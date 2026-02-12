@@ -26,6 +26,7 @@ const t = useTranslations(locale);
 const allPosts = await getCollection('blog', ({ data }) => !data.draft);
 
 let posts;
+
 if (locale === DEFAULT_LOCALE) {
   posts = allPosts.filter((post) =>
     post.id.toLowerCase().startsWith(`${DEFAULT_LOCALE.toLowerCase()}/`),
@@ -34,7 +35,7 @@ if (locale === DEFAULT_LOCALE) {
   const postsMap = new Map();
   allPosts.forEach((post) => {
     const baseId = post.id.replace(new RegExp(`^(${LOCALE_LIST.join('|')})\\/`, 'i'), '');
-    if (!postsMap.has(baseId) || post.id.startsWith(`${locale}/`)) {
+    if (!postsMap.has(baseId) || post.id.toLowerCase().startsWith(`${locale.toLowerCase()}/`)) {
       postsMap.set(baseId, post);
     }
   });
