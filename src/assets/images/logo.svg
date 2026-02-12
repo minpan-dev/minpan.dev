@@ -32,5 +32,5 @@
   </defs>
 
   <path d="M20 70 L35 30 L50 55 L65 30 L80 70" class="animated-m-path" />
-  <circle cx="50" cy="70" r="6" fill="#64748b" opacity="0.5" />
+  <circle cx="50" cy="72" r="4" fill="#64748b" opacity="0.5" />
 </svg>
