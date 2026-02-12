@@ -1,6 +1,6 @@
 **[minpan.dev](https://minpan.dev)**
 
-My personal website
+The personal website of Min Pan.
 
 <br>
 

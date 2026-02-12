@@ -4,7 +4,7 @@ export const SITE = {
   website: 'https://minpan.dev',
   author: 'Min Pan',
   profile: 'https://minpan.dev',
-  desc: 'Personal blog of Min Pan, sharing technology, life and thoughts.',
+  desc: 'The personal website of Min Pan.',
   title: 'Min Pan',
   ogImage: 'astropaper-og.jpg',
   lightAndDarkMode: true,
@@ -16,7 +16,7 @@ export const SITE = {
   editPost: {
     enabled: true,
     text: 'Edit this page',
-    url: 'https://github.com/minpan-dev/blog/edit/main/',
+    url: 'https://github.com/minpan-dev/minpan.dev/edit/main/',
   },
   dynamicOgImage: true,
   dir: 'ltr',
