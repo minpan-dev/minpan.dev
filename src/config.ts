@@ -6,7 +6,7 @@ export const SITE = {
   profile: 'https://minpan.dev',
   desc: 'The personal website of Min Pan.',
   title: 'Min Pan',
-  ogImage: 'astropaper-og.jpg',
+  ogImage: 'minpan-og.png',
   lightAndDarkMode: true,
   postPerIndex: 4,
   postPerPage: 4,

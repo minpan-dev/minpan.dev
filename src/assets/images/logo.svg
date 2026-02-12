@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="10 20 80 60" fill="none">
+  <defs>
+    <linearGradient id="m-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e40af" />
+      <stop offset="100%" style="stop-color:#2dd4bf" />
+    </linearGradient>
+
+    <style>
+      /* 定义动画关键帧：控制描边偏移量从隐藏到显示 */
+      @keyframes drawM {
+        from {
+          stroke-dashoffset: 160; /* 初始值：大于路径长度，完全隐藏 */
+        }
+        to {
+          stroke-dashoffset: 0;   /* 结束值：无偏移，完全显示 */
+        }
+      }
+
+      /* 应用到路径上的样式类 */
+      .animated-m-path {
+        stroke: url(#m-grad);     /* 使用定义的渐变色描边 */
+        stroke-width: 12;         /* 线条粗细 */
+        stroke-linecap: round;    /* 端点圆润 */
+        stroke-linejoin: round;   /* 拐角圆润 */
+        /* 核心原理：将实线变为超长虚线 */
+        stroke-dasharray: 160;    /* 虚线实心部分的长度，需大于路径总长 */
+        stroke-dashoffset: 160;   /* 初始偏移量，把实心部分“藏”起来 */
+        /* 执行动画：时长1.5秒，缓入缓出，播放完毕后停留在结束状态 */
+        animation: drawM 1.5s ease-in-out forwards;
+      }
+    </style>
+  </defs>
+
+  <path d="M20 70 L35 30 L50 55 L65 30 L80 70" class="animated-m-path" />
+  <circle cx="50" cy="70" r="6" fill="#64748b" opacity="0.5" />
+</svg>
