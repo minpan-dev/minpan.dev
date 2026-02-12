@@ -27,7 +27,7 @@ html[data-theme='dark'] {
 }
 
 @theme inline {
-  --font-app: 'Noto Sans SC', system-ui, sans-serif;
+  --font-app: var(--font-google-sans-code);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
