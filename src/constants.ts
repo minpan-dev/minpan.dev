@@ -21,7 +21,7 @@ export const LOCALE_LIST = Object.keys(LOCALES_SETTING) as (keyof typeof LOCALES
 export const SOCIALS: Social[] = [
   {
     name: 'Instagram',
-    href: 'https://www.instagram.com/minpan1206',
+    href: 'https://www.instagram.com/minpandev',
     icon: IconInstagram,
   },
   {
@@ -31,7 +31,7 @@ export const SOCIALS: Social[] = [
   },
   {
     name: 'X',
-    href: 'https://x.com/minpan1206',
+    href: 'https://x.com/minpandev',
     icon: IconBrandX,
   },
   {

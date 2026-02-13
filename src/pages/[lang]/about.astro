@@ -4,6 +4,7 @@ import Header from '@/components/Header.astro';
 import Footer from '@/components/Footer.astro';
 import Breadcrumb from '@/components/Breadcrumb.astro';
 import { SITE } from '@/config';
+import { SOCIALS } from '@/constants';
 import { useTranslations, getCurrentLocale, getLocaleStaticPaths } from '@/utils/i18n';
 
 export const getStaticPaths = getLocaleStaticPaths;
@@ -35,10 +36,21 @@ const title = t('about.title');
       <h2>{t('about.contactMe')}</h2>
       <p>{t('about.contactDesc')}</p>
       <ul>
-        <li><a href="https://github.com/minpan-dev">{t('about.social.github')}</a></li>
-        <li><a href="https://x.com/minpan1206">{t('about.social.x')}</a></li>
-        <li><a href="https://www.instagram.com/minpan1206">{t('about.social.instagram')}</a></li>
-        <li><a href="mailto:minpan1206@gmail.com">{t('about.social.email')}</a></li>
+        {
+          SOCIALS.map((social) => (
+            <li>
+              <a
+                href={social.name === 'Mail' ? `mailto:${social.href}` : social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {t(
+                  `about.social.${social.name.toLowerCase() === 'mail' ? 'email' : social.name.toLowerCase()}` as string,
+                )}
+              </a>
+            </li>
+          ))
+        }
       </ul>
     </section>
   </main>
