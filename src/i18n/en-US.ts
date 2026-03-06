@@ -110,8 +110,11 @@ export const en_US = {
     'If you are interested in my projects or want to chat about technology, feel free to contact me through the following ways:',
 
   'about.frontend': 'Frontend',
+  'about.frontend.list': 'React, Astro, Tailwind CSS',
   'about.backend': 'Backend',
+  'about.backend.list': 'Node.js, Express',
   'about.tools': 'Tools',
+  'about.tools.list': 'Git, VS Code, Docker',
   'about.social.github': 'GitHub',
   'about.social.x': 'X (Twitter)',
   'about.social.instagram': 'Instagram',

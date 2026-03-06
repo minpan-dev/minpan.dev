@@ -106,8 +106,11 @@ export const zh_CN = {
   'about.contactDesc': '如果你对我的项目感兴趣，或者想聊聊技术，欢迎通过以下方式联系我：',
 
   'about.frontend': '前端',
+  'about.frontend.list': 'React, Astro, Tailwind CSS',
   'about.backend': '后端',
+  'about.backend.list': 'Node.js, Express',
   'about.tools': '工具',
+  'about.tools.list': 'Git, VS Code, Docker',
   'about.social.github': 'GitHub',
   'about.social.x': 'X (Twitter)',
   'about.social.instagram': 'Instagram',
