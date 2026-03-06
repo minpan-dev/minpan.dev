@@ -3,9 +3,13 @@ import { getCollection } from 'astro:content';
 import { getPath } from '@/utils/getPath';
 import getSortedPosts from '@/utils/getSortedPosts';
 import { SITE } from '@/config';
-import { useTranslations, getStaticLocales, getCurrentLocale } from '@/utils/i18n';
+import {
+  useTranslations,
+  getStaticLocales,
+  getCurrentLocale,
+  getLocalizedHref,
+} from '@/utils/i18n';
 import type { APIContext } from 'astro';
-import { getRelativeLocaleUrl } from 'astro:i18n';
 import sanitizeHtml from 'sanitize-html';
 import MarkdownIt from 'markdown-it';
 
@@ -33,7 +37,7 @@ export async function GET({ params }: APIContext) {
     description: t(SITE.desc),
     site: SITE.website,
     items: sortedPosts.map(({ data, id, filePath, body }) => ({
-      link: getRelativeLocaleUrl(locale, getPath(id, filePath)),
+      link: new URL(getLocalizedHref(locale, getPath(id, filePath)), SITE.website).href,
       title: data.title,
       description: data.description,
       pubDate: new Date(data.modDatetime ?? data.pubDatetime),
