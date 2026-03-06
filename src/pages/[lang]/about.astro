@@ -39,11 +39,7 @@ const title = t('about.title');
         {
           SOCIALS.map((social) => (
             <li>
-              <a
-                href={social.name === 'Mail' ? `mailto:${social.href}` : social.href}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a href={social.href} target="_blank" rel="noopener noreferrer">
                 {t(
                   `about.social.${social.name.toLowerCase() === 'mail' ? 'email' : social.name.toLowerCase()}` as string,
                 )}
