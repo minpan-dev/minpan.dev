@@ -121,7 +121,7 @@ const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
     <EditPost class="sm:hidden" {hideEditPost} {post} />
 
     <ul class="mt-4 mb-8 flex flex-wrap gap-4 sm:my-8">
-      {tags.map((tag) => <Tag tag={slugifyStr(tag)} tagName={tag} size="sm" />)}
+      {tags.map((tag: string) => <Tag tag={slugifyStr(tag)} tagName={tag} size="sm" />)}
     </ul>
 
     <BackToTopButton />
