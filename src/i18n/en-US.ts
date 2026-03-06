@@ -70,6 +70,7 @@ export const en_US = {
   'breadcrumb.page': 'Page',
   'breadcrumb.pageSuffix': '',
 
+  'post.updated': 'Updated',
   'post.copy': 'Copy',
   'post.copied': 'Copied',
   'post.back': 'Go Back',

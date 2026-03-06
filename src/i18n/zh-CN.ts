@@ -69,6 +69,7 @@ export const zh_CN = {
   'breadcrumb.page': '第',
   'breadcrumb.pageSuffix': '页',
 
+  'post.updated': '已更新',
   'post.copy': '复制',
   'post.copied': '已复制',
   'post.back': '返回',
