@@ -1,4 +1,9 @@
+const fontCache = new Map<string, ArrayBuffer>();
+
 async function loadGoogleFont(font: string, text: string, weight: number): Promise<ArrayBuffer> {
+  const cacheKey = `${font}-${weight}`;
+  const cached = fontCache.get(cacheKey);
+  if (cached) return cached;
   const API = `https://fonts.googleapis.com/css2?family=${font}:wght@${weight}&text=${encodeURIComponent(text)}`;
 
   const css = await (
@@ -20,7 +25,9 @@ async function loadGoogleFont(font: string, text: string, weight: number): Promi
     throw new Error('Failed to download dynamic font. Status: ' + res.status);
   }
 
-  return res.arrayBuffer();
+  const buffer = await res.arrayBuffer();
+  fontCache.set(cacheKey, buffer);
+  return buffer;
 }
 
 async function loadGoogleFonts(
