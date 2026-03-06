@@ -102,7 +102,10 @@ document.addEventListener('astro:before-swap', (event) => {
 window
   .matchMedia('(prefers-color-scheme: dark)')
   .addEventListener('change', ({ matches: isDark }) => {
-    themeValue = isDark ? DARK : LIGHT;
-    window.theme?.setTheme(themeValue);
-    setPreference();
+    // Only react to system changes if the user hasn't explicitly set a preference
+    if (!localStorage.getItem(THEME)) {
+      themeValue = isDark ? DARK : LIGHT;
+      window.theme?.setTheme(themeValue);
+      reflectPreference();
+    }
   });
