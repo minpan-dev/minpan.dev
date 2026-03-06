@@ -56,9 +56,7 @@ export const en_US = {
 
   'search.pageTitle': 'Search',
   'search.pageDesc': 'Search articles...',
-  'search.devWarning':
-    'You need to build the project at least once to see search results in development.',
-  'search.devWarningTitle': 'Dev Mode Warning!',
+  'search.placeholder': 'Search articles...',
 
   'footer.copyright': 'Copyright',
   'footer.rights': 'All rights reserved.',

@@ -56,8 +56,7 @@ export const zh_CN = {
 
   'search.pageTitle': '搜索',
   'search.pageDesc': '搜索文章...',
-  'search.devWarning': '你需要至少构建一次项目才能在开发时看到搜索结果。',
-  'search.devWarningTitle': '开发模式警告！',
+  'search.placeholder': '搜索文章...',
 
   'footer.copyright': '版权所有',
   'footer.rights': '保留所有权利。',

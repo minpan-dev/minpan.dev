@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
 
 const getRobotsTxt = (sitemapURL: URL) => `
+# Algolia-Crawler-Verif: A45769B16D37A6E1
 User-agent: *
 Allow: /
 

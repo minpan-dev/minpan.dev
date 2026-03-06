@@ -22,4 +22,9 @@ export const SITE = {
   dir: 'ltr',
   locale: DEFAULT_LOCALE,
   timezone: 'Asia/Shanghai',
+  algolia: {
+    appId: 'DGBEIBYAS2',
+    apiKey: '9d30ef0a1e7274826dbac40eda9811e9',
+    indexName: 'minpan.dev',
+  },
 } as const;
