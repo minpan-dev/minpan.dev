@@ -6,6 +6,10 @@ import { SITE } from '@/config';
 import { useTranslations, getStaticLocales, getCurrentLocale } from '@/utils/i18n';
 import type { APIContext } from 'astro';
 import { getRelativeLocaleUrl } from 'astro:i18n';
+import sanitizeHtml from 'sanitize-html';
+import MarkdownIt from 'markdown-it';
+
+const parser = new MarkdownIt();
 
 export async function getStaticPaths() {
   return getStaticLocales().map((lang) => ({ params: { lang } }));
@@ -28,11 +32,14 @@ export async function GET({ params }: APIContext) {
     title: t(SITE.title),
     description: t(SITE.desc),
     site: SITE.website,
-    items: sortedPosts.map(({ data, id, filePath }) => ({
+    items: sortedPosts.map(({ data, id, filePath, body }) => ({
       link: getRelativeLocaleUrl(locale, getPath(id, filePath)),
       title: data.title,
       description: data.description,
       pubDate: new Date(data.modDatetime ?? data.pubDatetime),
+      content: sanitizeHtml(parser.render(body || ''), {
+        allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
+      }),
     })),
   });
 }
