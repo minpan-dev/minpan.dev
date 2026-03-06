@@ -1,31 +1,44 @@
 ---
-import Layout from '@/layouts/Layout.astro';
-import Header from '@/components/Header.astro';
-import Footer from '@/components/Footer.astro';
-import LinkButton from '@/components/LinkButton.astro';
-import { SITE } from '@/config';
-import { getCurrentLocale, useTranslations, getLocalizedHref } from '@/utils/i18n';
+import { DEFAULT_LOCALE, LOCALES_SETTING } from '@/constants';
 
-const locale = getCurrentLocale(Astro);
-const t = useTranslations(locale);
+const langs = Object.keys(LOCALES_SETTING);
+const baseUrl = import.meta.env.PROD ? Astro.site?.pathname || '/' : '/';
+const defaultLocale = DEFAULT_LOCALE;
 ---
 
-<Layout title={`404 Not Found | ${SITE.title}`}>
-  <Header />
+<!doctype html>
+<html lang={DEFAULT_LOCALE}>
+  <head>
+    <meta charset="UTF-8" />
+    <title>404 Not Found</title>
+    <meta name="robots" content="noindex" />
 
-  <main id="main-content" class="app-layout flex flex-1 items-center justify-center">
-    <div class="mb-14 flex flex-col items-center justify-center">
-      <h1 class="text-9xl font-bold text-accent">404</h1>
-      <span aria-hidden="true">¯\_(ツ)_/¯</span>
-      <p class="mt-4 text-2xl sm:text-3xl">{t('error.404.title')}</p>
-      <LinkButton
-        href={getLocalizedHref(locale, '/')}
-        class="my-6 text-lg underline decoration-dashed underline-offset-8"
-      >
-        {t('error.404.back')}
-      </LinkButton>
-    </div>
-  </main>
+    <script is:inline define:vars={{ langs, baseUrl, defaultLocale }}>
+      const findLocale = (lang) => {
+        if (!lang) return null;
+        const lowerLang = lang.toLowerCase();
+        return (
+          langs.find((l) => l.toLowerCase() === lowerLang) ||
+          langs.find((l) => l.toLowerCase() === lowerLang.split('-')[0])
+        );
+      };
 
-  <Footer />
-</Layout>
+      const savedLang = localStorage.selectedLang;
+      const browserLang = navigator.language;
+
+      const targetLang = findLocale(savedLang) || findLocale(browserLang) || defaultLocale;
+      const cleanBase = baseUrl.endsWith('/') ? baseUrl : baseUrl + '/';
+
+      // Look at the attempted path and construct the new 404 redirect with the correct language
+      location.replace(`${cleanBase}${targetLang}/404/`);
+    </script>
+  </head>
+  <body style="background: #fdfdfd;">
+    <h1>404 Not Found</h1>
+    <script is:inline>
+      if (localStorage.getItem('theme') === 'dark') {
+        document.body.style.background = '#212737';
+      }
+    </script>
+  </body>
+</html>
