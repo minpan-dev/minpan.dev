@@ -4,13 +4,17 @@ import postFilter from './postFilter';
 import type { Tag } from '@/types/blog';
 
 const getUniqueTags = (posts: CollectionEntry<'blog'>[]) => {
-  const tags: Tag[] = posts
+  const tagMap = new Map<string, Tag>();
+  posts
     .filter(postFilter)
     .flatMap((post) => post.data.tags)
-    .map((tag) => ({ tag: slugifyStr(tag), tagName: tag }))
-    .filter((value, index, self) => self.findIndex((tag) => tag.tag === value.tag) === index)
-    .sort((tagA, tagB) => tagA.tag.localeCompare(tagB.tag));
-  return tags;
+    .forEach((tag) => {
+      const slug = slugifyStr(tag);
+      if (!tagMap.has(slug)) {
+        tagMap.set(slug, { tag: slug, tagName: tag });
+      }
+    });
+  return [...tagMap.values()].sort((a, b) => a.tag.localeCompare(b.tag));
 };
 
 export default getUniqueTags;
