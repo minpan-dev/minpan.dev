@@ -30,21 +30,24 @@ async function loadGoogleFont(font: string, text: string, weight: number): Promi
   return buffer;
 }
 
+type Weight = 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900;
+type FontStyle = 'normal' | 'italic';
+
 async function loadGoogleFonts(
   text: string,
-): Promise<Array<{ name: string; data: ArrayBuffer; weight: number; style: string }>> {
+): Promise<Array<{ name: string; data: ArrayBuffer; weight: Weight; style: FontStyle }>> {
   const fontsConfig = [
     {
       name: 'IBM Plex Mono',
       font: 'IBM+Plex+Mono',
       weight: 400 as const,
-      style: 'normal',
+      style: 'normal' as const,
     },
     {
       name: 'IBM Plex Mono',
       font: 'IBM+Plex+Mono',
       weight: 700 as const,
-      style: 'bold',
+      style: 'normal' as const,
     },
   ];
 
