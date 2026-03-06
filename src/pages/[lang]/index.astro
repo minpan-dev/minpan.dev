@@ -10,7 +10,7 @@ import getSortedPosts from '@/utils/getSortedPosts';
 import IconRss from '@/assets/icons/IconRss.svg';
 import IconArrowRight from '@/assets/icons/IconArrowRight.svg';
 import { SITE } from '@/config';
-import { DEFAULT_LOCALE, LOCALE_LIST, SOCIALS } from '@/constants';
+import { SOCIALS } from '@/constants';
 import {
   useTranslations,
   getCurrentLocale,
@@ -18,29 +18,15 @@ import {
   getLocalizedHref,
 } from '@/utils/i18n';
 
+import { getLocalizedPosts } from '@/utils/getLocalizedPosts';
+
 export const getStaticPaths = getLocaleStaticPaths;
 
 const locale = getCurrentLocale(Astro);
 const t = useTranslations(locale);
 
 const allPosts = await getCollection('blog', ({ data }) => !data.draft);
-
-let posts;
-
-if (locale === DEFAULT_LOCALE) {
-  posts = allPosts.filter((post) =>
-    post.id.toLowerCase().startsWith(`${DEFAULT_LOCALE.toLowerCase()}/`),
-  );
-} else {
-  const postsMap = new Map();
-  allPosts.forEach((post) => {
-    const baseId = post.id.replace(new RegExp(`^(${LOCALE_LIST.join('|')})\\/`, 'i'), '');
-    if (!postsMap.has(baseId) || post.id.toLowerCase().startsWith(`${locale.toLowerCase()}/`)) {
-      postsMap.set(baseId, post);
-    }
-  });
-  posts = Array.from(postsMap.values());
-}
+const posts = getLocalizedPosts(allPosts, locale);
 
 const sortedPosts = getSortedPosts(posts);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);

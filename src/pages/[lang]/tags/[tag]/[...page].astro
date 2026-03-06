@@ -12,21 +12,13 @@ import Card from '@/components/Card.astro';
 import Pagination from '@/components/Pagination.astro';
 import { useTranslations, getCurrentLocale } from '@/utils/i18n';
 import { LOCALE_LIST } from '@/constants';
+import { getLocalizedPosts } from '@/utils/getLocalizedPosts';
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
   const allPosts = await getCollection('blog', ({ data }) => !data.draft);
 
   return LOCALE_LIST.flatMap((lang) => {
-    // 语言合并逻辑
-    const postsMap = new Map();
-    allPosts.forEach((post) => {
-      const baseId = post.id.replace(new RegExp(`^(${LOCALE_LIST.join('|')})\\/`, 'i'), '');
-      if (!postsMap.has(baseId) || post.id.toLowerCase().startsWith(`${lang.toLowerCase()}/`)) {
-        postsMap.set(baseId, post);
-      }
-    });
-
-    const posts = Array.from(postsMap.values());
+    const posts = getLocalizedPosts(allPosts, lang);
     const tags = getUniqueTags(posts);
 
     return tags.flatMap(({ tag, tagName }) => {

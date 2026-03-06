@@ -10,27 +10,14 @@ import Footer from '@/components/Footer.astro';
 import Card from '@/components/Card.astro';
 import Pagination from '@/components/Pagination.astro';
 import { useTranslations, getCurrentLocale, getStaticLocales } from '@/utils/i18n';
-import { DEFAULT_LOCALE, LOCALE_LIST } from '@/constants';
+
+import { getLocalizedPosts } from '@/utils/getLocalizedPosts';
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
   const allPosts = await getCollection('blog', ({ data }) => !data.draft);
 
   return getStaticLocales().flatMap((lang) => {
-    let posts;
-    if (lang.toLowerCase() === DEFAULT_LOCALE.toLowerCase()) {
-      posts = allPosts.filter((post) =>
-        post.id.toLowerCase().startsWith(`${DEFAULT_LOCALE.toLowerCase()}/`),
-      );
-    } else {
-      const postsMap = new Map();
-      allPosts.forEach((post) => {
-        const baseId = post.id.replace(new RegExp(`^(${LOCALE_LIST.join('|')})\\/`, 'i'), '');
-        if (!postsMap.has(baseId) || post.id.toLowerCase().startsWith(`${lang.toLowerCase()}/`)) {
-          postsMap.set(baseId, post);
-        }
-      });
-      posts = Array.from(postsMap.values());
-    }
+    const posts = getLocalizedPosts(allPosts, lang);
 
     return paginate(getSortedPosts(posts), {
       params: { lang },

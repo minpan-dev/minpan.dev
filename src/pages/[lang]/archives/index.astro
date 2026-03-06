@@ -8,8 +8,8 @@ import Card from '@/components/Card.astro';
 import getPostsByGroupCondition from '@/utils/getPostsByGroupCondition';
 import { SITE } from '@/config';
 import { useTranslations, getCurrentLocale, getLocaleStaticPaths } from '@/utils/i18n';
-import { DEFAULT_LOCALE, LOCALE_LIST } from '@/constants';
 import getSortedPosts from '@/utils/getSortedPosts';
+import { getLocalizedPosts } from '@/utils/getLocalizedPosts';
 
 export const getStaticPaths = getLocaleStaticPaths;
 
@@ -22,22 +22,7 @@ if (!SITE.showArchives) {
 }
 
 const allPosts = await getCollection('blog', ({ data }) => !data.draft);
-
-let posts;
-if (locale === DEFAULT_LOCALE) {
-  posts = allPosts.filter((post) =>
-    post.id.toLowerCase().startsWith(`${DEFAULT_LOCALE.toLowerCase()}/`),
-  );
-} else {
-  const postsMap = new Map();
-  allPosts.forEach((post) => {
-    const baseId = post.id.replace(new RegExp(`^(${LOCALE_LIST.join('|')})\\/`, 'i'), '');
-    if (!postsMap.has(baseId) || post.id.startsWith(`${locale}/`)) {
-      postsMap.set(baseId, post);
-    }
-  });
-  posts = Array.from(postsMap.values());
-}
+const posts = getLocalizedPosts(allPosts, locale);
 
 const sortedPosts = getSortedPosts(posts);
 const months = t('archives.months');
