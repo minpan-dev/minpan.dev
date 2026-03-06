@@ -94,6 +94,7 @@ const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
     id="main-content"
     class:list={['app-layout pb-12', { 'mt-8': !SITE.showBackButton }]}
     data-pagefind-body
+    data-pagefind-filter={`lang:${locale}`}
   >
     <h1
       transition:name={slugifyStr(title.replaceAll('.', '-'))}
