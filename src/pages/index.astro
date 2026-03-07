@@ -33,7 +33,9 @@ const defaultLocale = DEFAULT_LOCALE;
         const lowerLang = lang.toLowerCase();
         // Match exact or base (e.g. en-US or en)
         return (
+          // @ts-expect-error: langs is injected via define:vars
           langs.find((l) => l.toLowerCase() === lowerLang) ||
+          // @ts-expect-error: langs is injected via define:vars
           langs.find((l) => l.toLowerCase() === lowerLang.split('-')[0])
         );
       };

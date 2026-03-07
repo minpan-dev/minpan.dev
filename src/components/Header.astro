@@ -1,12 +1,12 @@
 ---
 import IconX from '@/assets/icons/IconX.svg';
 import IconMoon from '@/assets/icons/IconMoon.svg';
-import IconSearch from '@/assets/icons/IconSearch.svg';
 import IconArchive from '@/assets/icons/IconArchive.svg';
 import IconSunHigh from '@/assets/icons/IconSunHigh.svg';
 import IconMenuDeep from '@/assets/icons/IconMenuDeep.svg';
 import Logo from '@/assets/images/logo.svg';
 import LinkButton from './LinkButton.astro';
+import Search from './Search.astro';
 import LanguagePicker from './LanguagePicker.astro';
 import { SITE } from '@/config';
 import {
@@ -137,18 +137,7 @@ const isActive = (path: string) => {
           )
         }
         <li class="col-span-1 flex items-center justify-center">
-          <LinkButton
-            href={getLocalizedHref(locale, 'search')}
-            class:list={[
-              'focus-outline flex p-3 sm:p-1',
-              { '[&>svg]:stroke-accent': isActive('search') },
-            ]}
-            title={t('nav.search')}
-            aria-label={t('nav.search')}
-          >
-            <IconSearch />
-            <span class="sr-only">{t('nav.search')}</span>
-          </LinkButton>
+          <Search />
         </li>
         {
           SITE.lightAndDarkMode && (
@@ -206,5 +195,7 @@ const isActive = (path: string) => {
   }
 
   setupHeader();
-  document.addEventListener('astro:after-swap', setupHeader);
+  document.addEventListener('astro:after-swap', () => {
+    setupHeader();
+  });
 </script>

@@ -1,0 +1,39 @@
+---
+import '@docsearch/css';
+---
+
+<button
+  id="search-button"
+  class="flex items-center gap-2 rounded-md border px-3 py-1.5 text-sm text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="h-4 w-4"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="m21 21-4.35-4.35M11 19a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z"></path>
+  </svg>
+
+  <span>Search</span>
+
+  <kbd class="ml-2 hidden rounded border px-1.5 text-xs text-gray-400 sm:inline"> ⌘K </kbd>
+</button>
+
+<script>
+  import docsearch from '@docsearch/js';
+  import { SITE } from '@/config';
+
+  docsearch({
+    container: '#search-button',
+    appId: SITE.algolia.appId,
+    indexName: SITE.algolia.indexName,
+    apiKey: SITE.algolia.apiKey,
+    placeholder: 'Search articles...',
+  });
+</script>
