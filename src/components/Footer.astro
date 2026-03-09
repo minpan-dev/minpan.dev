@@ -16,7 +16,7 @@ const locale = getCurrentLocale(Astro);
 const t = useTranslations(locale);
 ---
 
-<footer class:list={['app-layout', { 'mt-auto': !noMarginTop }, className]} {...attrs}>
+<footer class:list={['w-full px-4 sm:px-8', { 'mt-auto': !noMarginTop }, className]} {...attrs}>
   <div
     class:list={[
       'py-6 sm:py-4',
