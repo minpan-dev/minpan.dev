@@ -49,9 +49,6 @@ html[data-theme='dark'] {
   }
 
   body {
-    /* 1. min-h-svh: 解决移动端浏览器地址栏高度问题
-      2. antialiased: 让字体在 macOS 上更清晰
-    */
     @apply flex min-h-svh flex-col bg-background font-app text-foreground antialiased selection:bg-accent/30 selection:text-foreground;
   }
   a,

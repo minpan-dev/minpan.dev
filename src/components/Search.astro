@@ -1,17 +1,130 @@
 ---
 import '@docsearch/css';
+import IconSearch from '@/assets/icons/IconSearch.svg';
 ---
 
-<div id="docsearch"></div>
+<button
+  id="custom-search-btn"
+  type="button"
+  class="focus-outline relative size-12 p-4 sm:size-8 hover:[&>svg]:stroke-accent"
+  aria-label="Search"
+  title="Search"
+>
+  <IconSearch class="absolute top-[50%] left-[50%] -translate-[50%] scale-100 transition-colors" />
+</button>
+
+<div id="docsearch" class="hidden"></div>
 
 <script>
   import docsearch from '@docsearch/js';
   import { SITE } from '@/config';
 
-  docsearch({
-    container: '#docsearch',
-    appId: SITE.algolia.appId,
-    indexName: SITE.algolia.indexName,
-    apiKey: SITE.algolia.apiKey,
-  });
+  function initSearch() {
+    const container = document.querySelector('#docsearch');
+    if (!container) return;
+
+    // 清理之前的搜索框（如果存在）避免重复挂载
+    container.innerHTML = '';
+
+    docsearch({
+      container: '#docsearch',
+      appId: SITE.algolia.appId,
+      indexName: SITE.algolia.indexName,
+      apiKey: SITE.algolia.apiKey,
+    });
+  }
+
+  // 初次加载和客户端路由切换后重新初始化
+  initSearch();
+  document.addEventListener('astro:after-swap', initSearch);
+
+  // 绑定自定义按钮点击事件
+  function setupCustomSearchTrigger() {
+    const customBtn = document.querySelector('#custom-search-btn');
+    customBtn?.addEventListener('click', () => {
+      const docsearchBtn = document.querySelector('.DocSearch-Button') as HTMLElement;
+      if (docsearchBtn) {
+        docsearchBtn.click();
+      }
+    });
+  }
+
+  setupCustomSearchTrigger();
+  document.addEventListener('astro:after-swap', setupCustomSearchTrigger);
 </script>
+
+<style is:global>
+  @reference "../styles/global.css";
+
+  :root,
+  html[data-theme='light'] {
+    --docsearch-primary-color: var(--accent);
+    --docsearch-text-color: var(--foreground);
+    --docsearch-spacing: 12px;
+    --docsearch-icon-stroke-width: 1.4;
+    --docsearch-highlight-color: var(--docsearch-primary-color);
+    --docsearch-muted-color: var(--muted-foreground);
+    --docsearch-container-background: rgba(101, 109, 118, 0.4);
+    --docsearch-logo-color: var(--docsearch-text-color);
+
+    /* modal */
+    --docsearch-modal-background: var(--background);
+    --docsearch-modal-shadow:
+      inset 1px 1px 0 0 rgba(255, 255, 255, 0.5), 0 3px 8px 0 rgba(85, 90, 100, 1);
+
+    /* searchbox */
+    --docsearch-searchbox-height: 56px;
+    --docsearch-searchbox-background: var(--muted);
+    --docsearch-searchbox-focus-background: var(--background);
+    --docsearch-searchbox-shadow: inset 0 0 0 2px var(--docsearch-primary-color);
+
+    /* hit */
+    --docsearch-hit-height: 56px;
+    --docsearch-hit-color: var(--foreground);
+    --docsearch-hit-active-color: var(--accent-foreground);
+    --docsearch-hit-background: var(--background);
+    --docsearch-hit-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+
+    /* key */
+    --docsearch-key-gradient: linear-gradient(-225deg, var(--muted) 0%, var(--background) 100%);
+    --docsearch-key-shadow:
+      inset 0 -2px 0 0 rgba(0, 0, 0, 0.2), inset 0 0 1px 1px rgba(255, 255, 255, 0.2),
+      0 1px 2px 1px rgba(30, 35, 90, 0.4);
+
+    /* footer */
+    --docsearch-footer-height: 44px;
+    --docsearch-footer-background: var(--background);
+    --docsearch-footer-shadow: 0 -1px 0 0 var(--border), 0 -3px 6px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  html[data-theme='dark'] {
+    --docsearch-primary-color: var(--accent);
+    --docsearch-text-color: var(--foreground);
+    --docsearch-container-background: rgba(9, 10, 17, 0.8);
+    --docsearch-logo-color: var(--foreground);
+
+    /* modal */
+    --docsearch-modal-background: var(--background);
+    --docsearch-modal-shadow: inset 1px 1px 0 0 #2c2e40, 0 3px 8px 0 #000309;
+
+    /* searchbox */
+    --docsearch-searchbox-background: var(--muted);
+    --docsearch-searchbox-focus-background: var(--background);
+
+    /* hit */
+    --docsearch-hit-color: var(--foreground);
+    --docsearch-hit-active-color: var(--accent-foreground);
+    --docsearch-hit-background: var(--background);
+    --docsearch-hit-shadow: none;
+
+    /* key */
+    --docsearch-key-gradient: linear-gradient(-26.5deg, var(--muted) 0%, var(--background) 100%);
+    --docsearch-key-shadow:
+      inset 0 -2px 0 0 #282d55, inset 0 0 1px 1px #51577d, 0 2px 2px 0 rgba(3, 4, 9, 0.3);
+
+    /* footer */
+    --docsearch-footer-background: var(--background);
+    --docsearch-footer-shadow:
+      inset 0 1px 0 0 rgba(73, 76, 106, 0.5), 0 -4px 8px 0 rgba(0, 0, 0, 0.2);
+  }
+</style>
