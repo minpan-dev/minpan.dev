@@ -10,7 +10,7 @@ Min Pan 的个人博客网站，基于 **Astro 5** 构建，部署于 **Cloudfla
 | 样式 | TailwindCSS 4 + CSS 变量主题系统 |
 | 字体 | Google Sans Code（通过 Astro 实验性 Fonts API） |
 | 部署 | Cloudflare Workers（`@astrojs/cloudflare` 适配器，Wrangler 部署） |
-| 搜索 | Pagefind（构建时生成静态搜索索引） |
+| 搜索 | Algolia DocSearch |
 | OG 图片 | Satori（SVG 渲染） + @resvg/resvg-js（SVG → PNG） |
 | 代码高亮 | Shiki（GitHub Light/Dark 主题） |
 | Markdown | remark-toc（目录生成）、remark-collapse（折叠） |
@@ -127,7 +127,6 @@ minpan.dev/
 | `/{lang}/tags/` | `pages/[lang]/tags/index.astro` | 标签列表 |
 | `/{lang}/tags/{tag}/` | `pages/[lang]/tags/[tag]/[...page].astro` | 标签下的文章 |
 | `/{lang}/archives/` | `pages/[lang]/archives/` | 归档（按年月分组） |
-| `/{lang}/search/` | `pages/[lang]/search.astro` | Pagefind 全文搜索 |
 | `/{lang}/about/` | `pages/[lang]/about.astro` | 关于页面 |
 | `/{lang}/rss.xml` | `pages/[lang]/rss.xml.ts` | RSS 订阅源 |
 
@@ -184,7 +183,7 @@ minpan.dev/
 
 ```bash
 pnpm dev          # 启动开发服务器
-pnpm build        # 构建 + Pagefind 索引生成
+pnpm build        # 构建静态资源
 pnpm preview      # 构建 + 本地 Wrangler 预览
 pnpm deploy       # 部署到 Cloudflare
 pnpm check        # 类型检查 + 构建验证
