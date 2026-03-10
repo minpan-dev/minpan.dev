@@ -1,4 +1,4 @@
-import { zh_CN } from '../i18n/zh-CN';
+import type zh_CN from '../i18n/zh-CN';
 
 import { LOCALES_SETTING } from '../constants';
 

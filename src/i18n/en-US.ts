@@ -1,4 +1,4 @@
-export const en_US = {
+export default {
   site: {
     title: 'Min Pan',
     author: 'Min Pan',
@@ -143,5 +143,3 @@ export const en_US = {
     },
   },
 };
-
-export default en_US;

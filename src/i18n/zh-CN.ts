@@ -1,4 +1,4 @@
-export const zh_CN = {
+export default {
   site: {
     title: 'Min Pan',
     author: 'Min Pan',
@@ -141,5 +141,3 @@ export const zh_CN = {
     },
   },
 };
-
-export default zh_CN;
