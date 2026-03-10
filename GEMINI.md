@@ -4,18 +4,18 @@ Min Pan 的个人博客网站，基于 **Astro 5** 构建，部署于 **Cloudfla
 
 ## 技术栈
 
-| 类别 | 技术 |
-|------|------|
-| 框架 | Astro 5（SSG + 客户端路由 `ClientRouter`） |
-| 样式 | TailwindCSS 4 + CSS 变量主题系统 |
-| 字体 | Google Sans Code（通过 Astro 实验性 Fonts API） |
-| 部署 | Cloudflare Workers（`@astrojs/cloudflare` 适配器，Wrangler 部署） |
-| 搜索 | Algolia DocSearch |
-| OG 图片 | Satori（SVG 渲染） + @resvg/resvg-js（SVG → PNG） |
-| 代码高亮 | Shiki（GitHub Light/Dark 主题） |
-| Markdown | remark-toc（目录生成）、remark-collapse（折叠） |
-| 包管理 | pnpm 10 |
-| 代码质量 | ESLint + Prettier + Husky（pre-commit lint-staged） |
+| 类别     | 技术                                                              |
+| -------- | ----------------------------------------------------------------- |
+| 框架     | Astro 5（SSG + 客户端路由 `ClientRouter`）                        |
+| 样式     | TailwindCSS 4 + CSS 变量主题系统                                  |
+| 字体     | Google Sans Code（通过 Astro 实验性 Fonts API）                   |
+| 部署     | Cloudflare Workers（`@astrojs/cloudflare` 适配器，Wrangler 部署） |
+| 搜索     | Algolia DocSearch                                                 |
+| OG 图片  | Satori（SVG 渲染） + @resvg/resvg-js（SVG → PNG）                 |
+| 代码高亮 | Shiki（GitHub Light/Dark 主题）                                   |
+| Markdown | remark-toc（目录生成）、remark-collapse（折叠）                   |
+| 包管理   | pnpm 10                                                           |
+| 代码质量 | ESLint + Prettier + Husky（pre-commit lint-staged）               |
 
 ---
 
@@ -90,20 +90,20 @@ minpan.dev/
 
 **文章 Schema**（定义在 `src/content.config.ts`）：
 
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| `title` | `string` | 标题（必填） |
-| `description` | `string` | 描述（必填） |
-| `pubDatetime` | `Date` | 发布时间（必填） |
-| `modDatetime` | `Date?` | 修改时间 |
-| `author` | `string` | 作者（默认 `SITE.author`） |
-| `tags` | `string[]` | 标签（默认 `['others']`） |
-| `featured` | `boolean?` | 是否精选 |
-| `draft` | `boolean?` | 是否草稿 |
-| `ogImage` | `image \| string?` | 自定义 OG 图片 |
-| `canonicalURL` | `string?` | 规范 URL |
-| `hideEditPost` | `boolean?` | 隐藏编辑链接 |
-| `timezone` | `string?` | 时区 |
+| 字段           | 类型               | 说明                       |
+| -------------- | ------------------ | -------------------------- |
+| `title`        | `string`           | 标题（必填）               |
+| `description`  | `string`           | 描述（必填）               |
+| `pubDatetime`  | `Date`             | 发布时间（必填）           |
+| `modDatetime`  | `Date?`            | 修改时间                   |
+| `author`       | `string`           | 作者（默认 `SITE.author`） |
+| `tags`         | `string[]`         | 标签（默认 `['others']`）  |
+| `featured`     | `boolean?`         | 是否精选                   |
+| `draft`        | `boolean?`         | 是否草稿                   |
+| `ogImage`      | `image \| string?` | 自定义 OG 图片             |
+| `canonicalURL` | `string?`          | 规范 URL                   |
+| `hideEditPost` | `boolean?`         | 隐藏编辑链接               |
+| `timezone`     | `string?`          | 时区                       |
 
 **文章工具函数**：
 
@@ -116,19 +116,19 @@ minpan.dev/
 
 ### 3. 页面路由
 
-| 路径 | 文件 | 说明 |
-|------|------|------|
-| `/` | `pages/index.astro` | 语言检测 + 重定向 |
-| `/og.png` | `pages/og.png.ts` | 站点 OG 图片（API Route） |
-| `/robots.txt` | `pages/robots.txt.ts` | robots.txt（API Route） |
-| `/{lang}/` | `pages/[lang]/index.astro` | 首页（精选 + 最新文章） |
-| `/{lang}/posts/` | `pages/[lang]/posts/` | 文章列表（分页） |
-| `/{lang}/posts/{slug}/` | `pages/[lang]/posts/[...slug].astro` | 文章详情 |
-| `/{lang}/tags/` | `pages/[lang]/tags/index.astro` | 标签列表 |
-| `/{lang}/tags/{tag}/` | `pages/[lang]/tags/[tag]/[...page].astro` | 标签下的文章 |
-| `/{lang}/archives/` | `pages/[lang]/archives/` | 归档（按年月分组） |
-| `/{lang}/about/` | `pages/[lang]/about.astro` | 关于页面 |
-| `/{lang}/rss.xml` | `pages/[lang]/rss.xml.ts` | RSS 订阅源 |
+| 路径                    | 文件                                      | 说明                      |
+| ----------------------- | ----------------------------------------- | ------------------------- |
+| `/`                     | `pages/index.astro`                       | 语言检测 + 重定向         |
+| `/og.png`               | `pages/og.png.ts`                         | 站点 OG 图片（API Route） |
+| `/robots.txt`           | `pages/robots.txt.ts`                     | robots.txt（API Route）   |
+| `/{lang}/`              | `pages/[lang]/index.astro`                | 首页（精选 + 最新文章）   |
+| `/{lang}/posts/`        | `pages/[lang]/posts/`                     | 文章列表（分页）          |
+| `/{lang}/posts/{slug}/` | `pages/[lang]/posts/[...slug].astro`      | 文章详情                  |
+| `/{lang}/tags/`         | `pages/[lang]/tags/index.astro`           | 标签列表                  |
+| `/{lang}/tags/{tag}/`   | `pages/[lang]/tags/[tag]/[...page].astro` | 标签下的文章              |
+| `/{lang}/archives/`     | `pages/[lang]/archives/`                  | 归档（按年月分组）        |
+| `/{lang}/about/`        | `pages/[lang]/about.astro`                | 关于页面                  |
+| `/{lang}/rss.xml`       | `pages/[lang]/rss.xml.ts`                 | RSS 订阅源                |
 
 ### 4. 主题系统
 
@@ -136,14 +136,14 @@ minpan.dev/
 
 **颜色变量**（CSS 自定义属性）：
 
-| 变量 | 亮色值 | 暗色值 | 用途 |
-|------|--------|--------|------|
-| `--background` | `#ffffff` | `#0d1117` | 页面背景 |
-| `--foreground` | `#1f2328` | `#e6edf3` | 主要文本 |
-| `--muted` | `#f6f8fa` | `#161b22` | 代码块/引用背景 |
-| `--muted-foreground` | `#656d76` | `#7d8590` | 次要信息 |
-| `--border` | `#d0d7de` | `#30363d` | 边框/分割线 |
-| `--accent` | `#0969da` | `#2f81f7` | 链接/按钮强调 |
+| 变量                 | 亮色值    | 暗色值    | 用途            |
+| -------------------- | --------- | --------- | --------------- |
+| `--background`       | `#ffffff` | `#0d1117` | 页面背景        |
+| `--foreground`       | `#1f2328` | `#e6edf3` | 主要文本        |
+| `--muted`            | `#f6f8fa` | `#161b22` | 代码块/引用背景 |
+| `--muted-foreground` | `#656d76` | `#7d8590` | 次要信息        |
+| `--border`           | `#d0d7de` | `#30363d` | 边框/分割线     |
+| `--accent`           | `#0969da` | `#2f81f7` | 链接/按钮强调   |
 
 **防 FOUC**：在 `<head>` 中内联脚本立即设置 `data-theme`，在 body 加载完成后由 `theme.ts` 管理完整的切换逻辑。
 
@@ -160,22 +160,22 @@ minpan.dev/
 
 14 个 Astro 组件，全部为 `.astro` 单文件组件：
 
-| 组件 | 说明 |
-|------|------|
-| `Header.astro` | 导航栏（响应式、主题切换、语言选择） |
-| `Footer.astro` | 页脚（版权信息） |
-| `Card.astro` | 文章卡片 |
-| `Datetime.astro` | 日期时间格式化显示 |
-| `Tag.astro` | 标签组件 |
-| `Pagination.astro` | 分页导航 |
-| `Breadcrumb.astro` | 面包屑导航 |
-| `BackButton.astro` | 返回按钮 |
-| `BackToTopButton.astro` | 回到顶部按钮 |
-| `EditPost.astro` | GitHub 编辑链接 |
-| `ShareLinks.astro` | 社交分享链接 |
-| `Socials.astro` | 社交媒体链接 |
-| `LinkButton.astro` | 链接按钮 |
-| `LanguagePicker.astro` | 语言选择器 |
+| 组件                    | 说明                                 |
+| ----------------------- | ------------------------------------ |
+| `Header.astro`          | 导航栏（响应式、主题切换、语言选择） |
+| `Footer.astro`          | 页脚（版权信息）                     |
+| `Card.astro`            | 文章卡片                             |
+| `Datetime.astro`        | 日期时间格式化显示                   |
+| `Tag.astro`             | 标签组件                             |
+| `Pagination.astro`      | 分页导航                             |
+| `Breadcrumb.astro`      | 面包屑导航                           |
+| `BackButton.astro`      | 返回按钮                             |
+| `BackToTopButton.astro` | 回到顶部按钮                         |
+| `EditPost.astro`        | GitHub 编辑链接                      |
+| `ShareLinks.astro`      | 社交分享链接                         |
+| `Socials.astro`         | 社交媒体链接                         |
+| `LinkButton.astro`      | 链接按钮                             |
+| `LanguagePicker.astro`  | 语言选择器                           |
 
 ---
 
@@ -198,17 +198,17 @@ pnpm cf-typegen   # 生成 Cloudflare Workers 类型
 
 全局配置集中在 `src/config.ts`（`SITE` 对象）：
 
-| 键 | 值 | 说明 |
-|------|------|------|
-| `website` | `https://minpan.dev` | 站点 URL |
-| `author` | `Min Pan` | 作者名 |
-| `postPerIndex` | `4` | 首页最新文章数量 |
-| `postPerPage` | `4` | 分页每页文章数 |
-| `lightAndDarkMode` | `true` | 启用明暗模式切换 |
-| `showArchives` | `true` | 显示归档页面 |
-| `dynamicOgImage` | `true` | 动态 OG 图片生成 |
-| `editPost.url` | GitHub 仓库地址 | 文章编辑链接 |
-| `timezone` | `Asia/Shanghai` | 默认时区 |
+| 键                 | 值                   | 说明             |
+| ------------------ | -------------------- | ---------------- |
+| `website`          | `https://minpan.dev` | 站点 URL         |
+| `author`           | `Min Pan`            | 作者名           |
+| `postPerIndex`     | `4`                  | 首页最新文章数量 |
+| `postPerPage`      | `4`                  | 分页每页文章数   |
+| `lightAndDarkMode` | `true`               | 启用明暗模式切换 |
+| `showArchives`     | `true`               | 显示归档页面     |
+| `dynamicOgImage`   | `true`               | 动态 OG 图片生成 |
+| `editPost.url`     | GitHub 仓库地址      | 文章编辑链接     |
+| `timezone`         | `Asia/Shanghai`      | 默认时区         |
 
 ---
 
