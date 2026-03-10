@@ -1,8 +1,8 @@
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import { DEFAULT_LOCALE, LOCALES_SETTING } from '@/constants';
 import type { Locale, LocalePath, TranslationDict, TranslationKey } from '@/types/i18n';
-import { zh_CN } from '../i18n/zh-CN';
-import { en_US } from '../i18n/en-US';
+import zh_CN from '../i18n/zh-CN';
+import en_US from '../i18n/en-US';
 
 const dictionaries: Record<Locale, TranslationDict> = {
   'zh-CN': zh_CN,
@@ -76,6 +76,17 @@ export function getLocaleStaticPaths() {
 }
 
 /**
+ * Helper to get nested value by dot notation key
+ */
+function getNestedValue(obj: Record<string, unknown>, path: string): string | undefined {
+  return path.split('.').reduce((acc: unknown, part: string) => {
+    return acc && typeof acc === 'object' && part in acc
+      ? (acc as Record<string, unknown>)[part]
+      : undefined;
+  }, obj) as string | undefined;
+}
+
+/**
  * Helper to get the translation function
  * @param locale - The current language
  * @returns - The translation function
@@ -83,17 +94,16 @@ export function getLocaleStaticPaths() {
 export function useTranslations(locale: string) {
   const dictionary = getDictionary(locale);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return function t(multilingual: TranslationKey | Record<string, string> | string): any {
+  return function t(multilingual: TranslationKey | Record<string, string> | string): string {
     if (typeof multilingual === 'string') {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return (dictionary as Record<string, any>)[multilingual] || multilingual;
+      const value = getNestedValue(dictionary as unknown as Record<string, unknown>, multilingual);
+      return value !== undefined ? value : multilingual;
     } else {
       // Find matching locale in the Record (case-insensitive)
-      // Find matching locale in the Record (case-insensitive)
       const key = Object.keys(multilingual).find((k) => k.toLowerCase() === locale.toLowerCase());
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return key ? (multilingual as any)[key] : (multilingual as any)[DEFAULT_LOCALE] || '';
+      return key
+        ? (multilingual as Record<string, string>)[key]
+        : (multilingual as Record<string, string>)[DEFAULT_LOCALE] || '';
     }
   };
 }

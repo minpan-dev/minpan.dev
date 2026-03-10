@@ -1,4 +1,4 @@
-import type { zh_CN } from '../i18n/zh-CN';
+import { zh_CN } from '../i18n/zh-CN';
 
 import { LOCALES_SETTING } from '../constants';
 
@@ -10,4 +10,15 @@ export type LocalePath = {
 };
 
 export type TranslationDict = typeof zh_CN;
-export type TranslationKey = keyof TranslationDict;
+
+type Leaves<T> = T extends object
+  ? {
+      [K in keyof T]-?: K extends string
+        ? T[K] extends object
+          ? `${K}.${Leaves<T[K]>}`
+          : K
+        : never;
+    }[keyof T]
+  : never;
+
+export type TranslationKey = Leaves<TranslationDict>;
