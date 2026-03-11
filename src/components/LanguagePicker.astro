@@ -1,46 +1,23 @@
 ---
+import IconLanguage from '@/assets/icons/IconLanguage.svg';
+import IconChevronDown from '@/assets/icons/IconChevronDown.svg';
 import { getLocaleLabel, getLocalePaths, getCurrentLocale } from '@/utils/i18n';
 
 const locale = getCurrentLocale(Astro);
 const localePaths = getLocalePaths(Astro.url);
 ---
 
-<div class="locale-picker group relative inline-block w-full text-center sm:w-auto sm:text-left">
+<div class="locale-picker group relative inline-block w-full text-center">
   <button
     type="button"
     class="locale-picker-btn flex w-full items-center justify-center gap-1.5 px-4 py-3 text-sm font-medium transition-all duration-200 hover:text-accent focus:outline-none sm:w-auto sm:px-2 sm:py-1"
     aria-haspopup="true"
     aria-expanded="false"
   >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      class="size-4.5 opacity-80"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="1.75"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    >
-      <circle cx="12" cy="12" r="10"></circle>
-      <line x1="2" y1="12" x2="22" y2="12"></line>
-      <path
-        d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
-      ></path>
-    </svg>
-    <span class="hidden sm:inline">{getLocaleLabel(locale)}</span>
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      class="locale-picker-arrow size-4 opacity-50 transition-transform duration-200 group-hover:opacity-100 sm:group-hover:rotate-180"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    >
-      <path d="m6 9 6 6 6-6"></path>
-    </svg>
+    <IconLanguage />
+    <IconChevronDown
+      class="locale-picker-arrow size-4 opacity-80 transition-transform duration-200 group-hover:opacity-100 sm:group-hover:rotate-180"
+    />
   </button>
 
   <div
@@ -54,36 +31,22 @@ const localePaths = getLocalePaths(Astro.url);
     role="menu"
   >
     <div
-      class="space-y-1 py-1.5 shadow-xl sm:rounded-xl sm:border sm:border-border sm:bg-background/95 sm:backdrop-blur-md"
+      class="space-y-2 px-2 py-2 shadow-xl sm:rounded-xl sm:border sm:border-border sm:bg-background/95 sm:backdrop-blur-md"
     >
       {
         localePaths.map((item) => (
           <a
             href={item.path}
             class:list={[
-              'flex items-center justify-between px-4 py-2 text-[13px] transition-colors',
+              'block rounded-lg py-1 text-sm transition-colors',
               item.locale === locale
-                ? 'bg-accent/5 font-semibold text-accent'
-                : 'text-foreground/70 hover:bg-muted hover:text-accent',
+                ? 'bg-accent/10 font-semibold text-accent'
+                : 'text-foreground hover:bg-accent/10 hover:text-accent',
             ]}
             role="menuitem"
             data-locale={item.locale}
           >
-            <span>{getLocaleLabel(item.locale)}</span>
-            {item.locale === locale && (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="size-3.5 text-accent"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="3"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <polyline points="20 6 9 17 4 12" />
-              </svg>
-            )}
+            {getLocaleLabel(item.locale)}
           </a>
         ))
       }
