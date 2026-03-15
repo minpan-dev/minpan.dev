@@ -28,14 +28,14 @@
     ]
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^12.6.12",
+    "@astrojs/cloudflare": "^13.0.0",
     "@astrojs/rss": "^4.0.15",
     "@astrojs/sitemap": "^3.7.0",
     "@docsearch/css": "^4.6.0",
     "@docsearch/js": "^4.6.0",
     "@resvg/resvg-js": "^2.6.2",
     "@tailwindcss/vite": "^4.2.1",
-    "astro": "^5.18.0",
+    "astro": "^6.0.0",
     "dayjs": "^1.11.19",
     "lodash.kebabcase": "^4.1.1",
     "markdown-it": "^14.1.1",
