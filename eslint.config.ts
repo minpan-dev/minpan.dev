@@ -1,8 +1,9 @@
 import eslintPluginAstro from 'eslint-plugin-astro';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
+import type { Config } from 'typescript-eslint';
 
-export default [
+const config: Config = [
   ...tseslint.configs.recommended,
   ...eslintPluginAstro.configs.recommended,
   {
@@ -16,3 +17,5 @@ export default [
   { rules: { 'no-console': 'error' } },
   { ignores: ['dist/**', '.astro'] },
 ];
+
+export default config;
