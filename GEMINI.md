@@ -11,7 +11,7 @@ Min Pan 的个人博客网站，基于 **Astro 5** 构建，部署于 **Cloudfla
 | 字体     | Google Sans Code（通过 Astro 实验性 Fonts API）                   |
 | 部署     | Cloudflare Workers（`@astrojs/cloudflare` 适配器，Wrangler 部署） |
 | 搜索     | Algolia DocSearch                                                 |
-| OG 图片  | Satori（SVG 渲染） + @resvg/resvg-js（SVG → PNG）                 |
+| OG 图片  | Satori（SVG 渲染） + Sharp（SVG → PNG）                 |
 | 代码高亮 | Shiki（GitHub Light/Dark 主题）                                   |
 | Markdown | remark-toc（目录生成）、remark-collapse（折叠）                   |
 | 包管理   | pnpm 10                                                           |
@@ -149,7 +149,7 @@ minpan.dev/
 
 ### 5. OG 图片生成
 
-使用 **Satori** 生成 SVG 布局，再通过 **@resvg/resvg-js** 转换为 PNG。
+使用 **Satori** 生成 SVG 布局，再通过 **Sharp**（Astro 内置图像服务驱动）转换为 PNG。
 
 - `src/utils/generateOgImages.ts` — 入口函数
 - `src/utils/og-templates/` — SVG 模板（站点级、文章级）
