@@ -1,0 +1,36 @@
+---
+import Layout from "@/layouts/Layout.astro"
+import Main from "@/layouts/Main.astro"
+import Header from "@/components/Header.tsx"
+import Footer from "@/components/Footer.astro"
+import { getCollection } from "astro:content"
+import { getUniqueTags } from "@/utils/getUniqueTags"
+
+const posts = await getCollection("blog")
+const tags = getUniqueTags(posts)
+---
+
+<Layout title="Tags">
+  <Header currentPath={Astro.url.pathname} client:load />
+  <Main class="py-8">
+    <h1 class="mb-8 text-3xl font-bold tracking-tight text-foreground">Tags</h1>
+    <ul class="flex flex-wrap gap-4">
+      {
+        tags.map(({ tag, tagName, count }) => (
+          <li>
+            <a
+              href={`/tags/${tag}/`}
+              class="inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground"
+            >
+              <span>#{tagName}</span>
+              <span class="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+                {count}
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </Main>
+  <Footer />
+</Layout>

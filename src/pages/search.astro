@@ -1,0 +1,25 @@
+---
+import Layout from "@/layouts/Layout.astro"
+import Main from "@/layouts/Main.astro"
+import Header from "@/components/Header.tsx"
+import Footer from "@/components/Footer.astro"
+---
+
+<Layout title="Search">
+  <Header currentPath={Astro.url.pathname} client:load />
+  <Main class="py-8" size="content">
+    <div class="flex flex-col items-center justify-center py-16 text-center">
+      <h1 class="mb-4 text-3xl font-bold tracking-tight text-foreground">
+        Search
+      </h1>
+      <p class="mb-6 text-muted-foreground">
+        Use the search icon in the header or press
+        <kbd
+          class="rounded border border-border px-1.5 py-0.5 text-xs font-medium text-muted-foreground"
+          >⌘K</kbd
+        > to search.
+      </p>
+    </div>
+  </Main>
+  <Footer />
+</Layout>

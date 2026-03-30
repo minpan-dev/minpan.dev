@@ -1,0 +1,142 @@
+---
+import "@/styles/global.css"
+import { SITE } from "@/config"
+import { ClientRouter } from "astro:transitions"
+
+interface Props {
+  title?: string
+  description?: string
+  ogImage?: string
+  canonicalURL?: string
+}
+
+const {
+  title = SITE.title,
+  description = SITE.desc,
+  ogImage = SITE.ogImage,
+  canonicalURL = new URL(Astro.url.pathname, Astro.site).href,
+} = Astro.props
+
+const pageTitle = title === SITE.title ? title : `${title} | ${SITE.title}`
+const socialImageURL = ogImage?.startsWith("http")
+  ? ogImage
+  : new URL(ogImage || SITE.ogImage, Astro.url.origin).href
+---
+
+<html lang={SITE.lang} class="scroll-smooth" style="color-scheme: light dark;">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Primary Meta Tags -->
+    <title>{pageTitle}</title>
+    <meta name="title" content={pageTitle} />
+    <meta name="description" content={description} />
+    <meta name="author" content={SITE.author} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={socialImageURL} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content={SITE.title} />
+    <meta
+      property="og:locale"
+      content={SITE.lang === "zh" ? "zh_CN" : "en_US"}
+    />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalURL} />
+    <meta property="twitter:title" content={pageTitle} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={socialImageURL} />
+
+    <!-- Structured Data -->
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        name: SITE.title,
+        url: SITE.website,
+        description: SITE.desc,
+        author: { "@type": "Person", name: SITE.author, url: SITE.profile },
+      })}
+    />
+
+    <!-- Slot for page-specific head content (e.g. BlogPosting schema) -->
+    <slot name="head" />
+
+    <!-- View Transitions — smooth page-to-page navigation -->
+    <ClientRouter />
+
+    <!-- Theme color (updated dynamically by init script below) -->
+    <meta name="theme-color" content="#ffffff" />
+
+    <!-- Theme initialization (prevent FOUC) -->
+    <script is:inline>
+      const theme = (() => {
+        if (
+          typeof localStorage !== "undefined" &&
+          localStorage.getItem("theme")
+        ) {
+          return localStorage.getItem("theme")
+        }
+        return window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light"
+      })()
+      if (theme === "dark") {
+        document.documentElement.classList.add("dark")
+      } else {
+        document.documentElement.classList.remove("dark")
+      }
+      // Keep theme-color meta in sync with color scheme
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      if (metaThemeColor) {
+        metaThemeColor.setAttribute(
+          "content",
+          theme === "dark" ? "#0a0a0a" : "#ffffff"
+        )
+      }
+    </script>
+  </head>
+  <body class="antialiased">
+    <a href="#main-content" class="SkipNav"> Skip to content </a>
+    <div class="RootLayout">
+      <div class="RootLayoutContainer">
+        <div class="RootLayoutContent">
+          <slot />
+        </div>
+        <span class="RootLayoutFooter" aria-hidden="true"></span>
+      </div>
+    </div>
+  </body>
+</html>
+
+<style>
+  .SkipNav {
+    position: absolute;
+    top: -100%;
+    left: 50%;
+    z-index: 50;
+    transform: translateX(-50%);
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+    background-color: var(--primary);
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--primary-foreground);
+    transition: top 0.2s;
+  }
+
+  .SkipNav:focus {
+    top: 0;
+  }
+</style>

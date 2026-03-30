@@ -1,0 +1,46 @@
+---
+import Layout from "@/layouts/Layout.astro"
+import Main from "@/layouts/Main.astro"
+import Header from "@/components/Header.tsx"
+import Footer from "@/components/Footer.astro"
+---
+
+<Layout title="About">
+  <Header currentPath={Astro.url.pathname} client:load />
+  <Main class="py-8" size="content">
+    <article
+      class="prose max-w-none prose-neutral dark:prose-invert prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-primary prose-a:underline-offset-4"
+    >
+      <h1>About</h1>
+      <p>
+        This is a minimal, responsive, and SEO-friendly blog built with <a
+          href="https://astro.build/">Astro</a
+        >, <a href="https://react.dev/">React</a>, <a
+          href="https://tailwindcss.com/">Tailwind CSS</a
+        >, and <a href="https://ui.shadcn.com/">shadcn/ui</a>.
+      </p>
+
+      <h2>Features</h2>
+      <ul>
+        <li>SEO-friendly with proper meta tags and Open Graph support</li>
+        <li>Light &amp; dark mode with system preference detection</li>
+        <li>Responsive design that works on all devices</li>
+        <li>Content Collections for type-safe Markdown blog posts</li>
+        <li>Tag-based post organization</li>
+        <li>Clean, minimal design inspired by AstroPaper</li>
+        <li>Built with shadcn/ui components</li>
+      </ul>
+
+      <h2>Tech Stack</h2>
+      <ul>
+        <li><strong>Framework</strong>: Astro</li>
+        <li><strong>UI Library</strong>: React</li>
+        <li><strong>Styling</strong>: Tailwind CSS v4</li>
+        <li><strong>Components</strong>: shadcn/ui (base-nova)</li>
+        <li><strong>Icons</strong>: Lucide React</li>
+        <li><strong>Typography</strong>: Geist Variable</li>
+      </ul>
+    </article>
+  </Main>
+  <Footer />
+</Layout>

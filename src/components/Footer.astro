@@ -1,0 +1,41 @@
+---
+import { SITE } from "@/config"
+import Socials from "./Socials.astro"
+
+const currentYear = new Date().getFullYear()
+---
+
+<footer class="Footer border-t border-border py-6">
+  <div
+    class="flex w-full flex-col items-center justify-between gap-4 sm:flex-row"
+  >
+    <p class="text-sm text-muted-foreground">
+      &copy; {currentYear}
+      {SITE.author}. All rights reserved.
+    </p>
+    <div class="flex items-center gap-4">
+      <a
+        href="/rss.xml"
+        class="text-sm text-muted-foreground transition-colors hover:text-foreground"
+        aria-label="RSS Feed"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M4 11a9 9 0 0 1 9 9"></path>
+          <path d="M4 4a16 16 0 0 1 16 16"></path>
+          <circle cx="5" cy="19" r="1"></circle>
+        </svg>
+      </a>
+      <Socials />
+    </div>
+  </div>
+</footer>

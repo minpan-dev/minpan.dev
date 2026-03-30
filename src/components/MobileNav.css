@@ -1,0 +1,280 @@
+@layer components {
+  /* ═══ Backdrop ═══ */
+  .MobileNavBackdrop {
+    position: fixed;
+    inset: 0;
+    min-height: 100dvh;
+    z-index: 40;
+
+    transition-duration: 500ms;
+    transition-property: backdrop-filter, opacity;
+    transition-timing-function: var(--ease-out-fast);
+    backdrop-filter: blur(2px);
+    background-image: linear-gradient(
+      to bottom,
+      transparent 2rem,
+      rgb(0 0 0 / 8%) 50%
+    );
+  }
+
+  .dark .MobileNavBackdrop {
+    background-image: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(0 0 0 / 30%) 6rem
+    );
+  }
+
+  .MobileNavBackdrop[data-starting-style],
+  .MobileNavBackdrop[data-ending-style] {
+    backdrop-filter: blur(0);
+    opacity: 0;
+  }
+
+  .MobileNavBackdrop[data-ending-style] {
+    transition-duration: 200ms;
+    transition-timing-function: var(--ease-in-slow);
+  }
+
+  /* ═══ Popup (fullscreen container) ═══ */
+  .MobileNavPopup {
+    position: fixed;
+    height: 100dvh;
+    inset: 0;
+    outline: 0;
+    z-index: 50;
+
+    transition-duration: 500ms, 250ms;
+    transform-origin: top center;
+    transition-property: transform, filter;
+    transition-timing-function: var(--ease-out-fast);
+  }
+
+  .MobileNavPopup[data-starting-style],
+  .MobileNavPopup[data-ending-style] {
+    transform: translateY(100dvh);
+    filter: blur(1px);
+  }
+
+  .MobileNavPopup[data-ending-style] {
+    transition-delay: 0ms, 100ms;
+    transition-duration: 200ms;
+    transition-timing-function: var(--ease-in-slow);
+  }
+
+  /* ═══ Viewport & scrollable area ═══ */
+  .MobileNavViewport {
+    position: absolute;
+    inset: 0;
+    height: 100dvh;
+    overflow-y: auto;
+
+    /* Native apps don't show scrollbars on sheets like this */
+    scrollbar-width: none;
+  }
+
+  .MobileNavViewport::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Decorative border between status bar and nav */
+  .MobileNavViewport::after {
+    content: "";
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    inset-inline: 0;
+    height: 1px;
+    transition: background-color 50ms;
+  }
+
+  .MobileNavViewport[data-clipped]::after {
+    background-color: var(--color-gridline);
+  }
+
+  .MobileNavViewportInner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ═══ Panel (the card) ═══ */
+  .MobileNavPanel {
+    margin-top: var(--header-height);
+    position: relative;
+    padding-block: 1rem;
+
+    border-top-left-radius: var(--radius-xl);
+    border-top-right-radius: var(--radius-xl);
+
+    box-shadow:
+      0 10px 64px -10px rgb(36 40 52 / 20%),
+      0 0.25px 0 1px var(--border);
+    background-image: linear-gradient(
+      to bottom,
+      var(--popover) calc(100% - 2rem),
+      transparent
+    );
+  }
+
+  .dark .MobileNavPanel {
+    box-shadow: 0 0 0 1px var(--border);
+  }
+
+  /* Wider screens: floating card */
+  @media (min-width: 40rem) {
+    .MobileNavPanel {
+      margin-block: 5rem;
+      margin-inline: auto;
+      width: calc(100% - 6rem);
+      max-width: 28rem;
+      background-image: none;
+      background-color: var(--popover);
+      border-radius: var(--radius-xl);
+    }
+  }
+
+  /* ═══ Close button ═══ */
+  .MobileNavCloseContainer {
+    position: sticky;
+    top: 0.75rem;
+    left: 100%;
+    margin-right: 0.75rem;
+    height: 0;
+    width: fit-content;
+    z-index: 2;
+  }
+
+  .MobileNavClose {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted-foreground);
+    outline: 0;
+
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 100%;
+    background-color: var(--accent);
+    backdrop-filter: blur(1rem);
+    transition: background-color 0.15s;
+  }
+
+  @media (hover: hover) {
+    .MobileNavClose:hover {
+      background-color: var(--muted);
+    }
+  }
+
+  .MobileNavClose:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: -1px;
+  }
+
+  /* Expanded tap target */
+  .MobileNavClose::after {
+    content: "";
+    width: 3rem;
+    height: 3rem;
+    position: absolute;
+  }
+
+  /* ═══ Nav items ═══ */
+  .MobileNavSection {
+    margin-bottom: 1rem;
+  }
+
+  .MobileNavHeading {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted-foreground);
+    padding-inline: 1.5rem;
+    padding-block: 0.5rem;
+  }
+
+  .MobileNavItem {
+    display: flex;
+  }
+
+  .MobileNavItem::after {
+    content: "";
+    display: block;
+    margin-inline: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .MobileNavLink {
+    flex-grow: 1;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    height: 2.75rem;
+    padding-inline: 1.5rem;
+    font-size: 1rem;
+    color: var(--foreground);
+    text-decoration: none;
+    transition: background-color 0.1s;
+  }
+
+  .MobileNavLink:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: -1px;
+  }
+
+  /* Touch device tap highlight */
+  @supports (-webkit-tap-highlight-color: black) {
+    .MobileNavLink {
+      -webkit-tap-highlight-color: var(--accent);
+    }
+  }
+
+  @supports not (-webkit-tap-highlight-color: black) {
+    .MobileNavLink:active {
+      background-color: var(--accent);
+    }
+  }
+
+  .MobileNavLink[data-active] {
+    font-weight: 500;
+    background-color: var(--accent);
+  }
+
+  /* ═══ Menu trigger (hamburger bars) ═══ */
+  .MobileNavTriggerBars {
+    display: flex;
+    width: 1rem;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .MobileNavTriggerBars::before,
+  .MobileNavTriggerBars::after {
+    content: "";
+    display: block;
+    width: 0.875rem;
+    height: 2px;
+    background-color: currentColor;
+    border-radius: 1px;
+  }
+
+  /* ═══ Bottom overscroll cover ═══ */
+  .MobileNavBottomOverscroll {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(
+      to bottom,
+      transparent 30%,
+      var(--popover) 50%
+    );
+    pointer-events: none;
+  }
+
+  @media (min-width: 40rem) {
+    .MobileNavBottomOverscroll {
+      display: none;
+    }
+  }
+}

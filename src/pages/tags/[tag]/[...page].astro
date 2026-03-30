@@ -1,0 +1,68 @@
+---
+import Layout from "@/layouts/Layout.astro"
+import Main from "@/layouts/Main.astro"
+import Header from "@/components/Header.tsx"
+import Footer from "@/components/Footer.astro"
+import PostCard from "@/components/PostCard.astro"
+import Pagination from "@/components/Pagination.tsx"
+import { getCollection } from "astro:content"
+import { getUniqueTags } from "@/utils/getUniqueTags"
+import { getPostsByTag } from "@/utils/getPostsByTag"
+import { SITE } from "@/config"
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog")
+  const tags = getUniqueTags(posts)
+
+  return tags.flatMap(({ tag }) => {
+    const tagPosts = getPostsByTag(posts, tag)
+    const totalPages = Math.ceil(tagPosts.length / SITE.postPerPage)
+
+    return Array.from({ length: totalPages }, (_, i) => ({
+      params: {
+        tag,
+        page: i === 0 ? undefined : String(i + 1),
+      },
+      props: {
+        tag,
+        tagPosts,
+        currentPage: i + 1,
+        totalPages,
+      },
+    }))
+  })
+}
+
+const { tag, tagPosts, currentPage, totalPages } = Astro.props
+const tagName = tag.charAt(0).toUpperCase() + tag.slice(1)
+
+const start = (currentPage - 1) * SITE.postPerPage
+const end = start + SITE.postPerPage
+const paginatedPosts = tagPosts.slice(start, end)
+---
+
+<Layout title={`Tag: ${tagName}`}>
+  <Header currentPath={Astro.url.pathname} client:load />
+  <Main class="py-8">
+    <div class="mb-8">
+      <a
+        href="/tags/"
+        class="text-sm text-muted-foreground transition-colors hover:text-foreground"
+      >
+        ← All tags
+      </a>
+    </div>
+    <h1 class="mb-8 text-3xl font-bold tracking-tight text-foreground">
+      #{tagName}
+    </h1>
+    <div class="grid gap-4">
+      {paginatedPosts.map((post) => <PostCard post={post} />)}
+    </div>
+    <Pagination
+      currentPage={currentPage}
+      totalPages={totalPages}
+      basePath={`/tags/${tag}/`}
+    />
+  </Main>
+  <Footer />
+</Layout>

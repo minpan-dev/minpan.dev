@@ -1,0 +1,235 @@
+@layer components {
+  .SearchScrollbar {
+    display: flex;
+    width: 0.75rem;
+    padding: 0.25rem;
+    user-select: none;
+    touch-action: none;
+  }
+
+  .SearchScrollbarThumb {
+    flex: 1;
+    border-radius: 9999px;
+    background-color: var(--border);
+  }
+
+  .SearchTrigger {
+    position: relative;
+    display: inline-flex;
+    height: 2rem;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    padding-inline: 0.75rem;
+    border: 1px solid var(--border);
+    background: var(--background);
+    color: var(--foreground);
+  }
+
+  .SearchTrigger:hover {
+    background: var(--accent);
+    color: var(--accent-foreground);
+  }
+
+  .SearchTriggerIcon {
+    width: 1rem;
+    height: 1rem;
+    color: var(--muted-foreground);
+  }
+
+  .SearchTriggerKbd {
+    display: none;
+    align-items: center;
+    gap: 0.25rem;
+    color: var(--muted-foreground);
+    font-size: 0.75rem;
+  }
+
+  @media (min-width: 64rem) {
+    .SearchTriggerKbd {
+      display: inline-flex;
+    }
+  }
+
+  .SearchTriggerPlus {
+    opacity: 0.7;
+  }
+
+  .SearchBackdrop {
+    position: fixed;
+    inset: 0;
+    background: rgb(0 0 0 / 0.35);
+    transition: opacity 150ms ease;
+    z-index: 50;
+  }
+
+  .SearchBackdrop[data-ending-style],
+  .SearchBackdrop[data-starting-style] {
+    opacity: 0;
+  }
+
+  .SearchViewportContained {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    overflow: hidden;
+    padding-top: min(8rem, 15vh);
+  }
+
+  .SearchPopupContained {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: min(34rem, calc(100vw - 2rem));
+    max-height: min(32rem, calc(100vh - 6rem));
+    overflow: hidden;
+    border-radius: 1rem;
+    background: var(--background);
+    color: var(--foreground);
+    border: 1px solid var(--border);
+    box-shadow: 0 20px 50px rgb(0 0 0 / 0.2);
+    transition:
+      transform 150ms ease,
+      opacity 150ms ease;
+  }
+
+  .SearchPopupContained[data-ending-style],
+  .SearchPopupContained[data-starting-style] {
+    transform: translateY(-0.75rem) scale(0.96);
+    opacity: 0;
+  }
+
+  .SearchHeadContained {
+    flex-shrink: 0;
+    border-bottom: 1px solid var(--border);
+    padding: 0.5rem 0.5rem 0.375rem;
+  }
+
+  .SearchInputRoot {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    height: 2rem;
+    border-radius: var(--radius-md);
+    padding-inline: 0.75rem;
+  }
+
+  .SearchInputIcon {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+    color: var(--muted-foreground);
+  }
+
+  .SearchInput {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    color: var(--foreground);
+    outline: none;
+  }
+
+  .SearchInput::placeholder {
+    color: var(--muted-foreground);
+  }
+
+  .SearchBody {
+    display: flex;
+    min-height: 0;
+    flex: 1;
+  }
+
+  .SearchScrollAreaRoot {
+    position: relative;
+    display: flex;
+    min-height: 0;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .SearchScrollAreaViewport {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .SearchList {
+    outline: 0;
+    padding: 0.5rem;
+  }
+
+  .SearchOptionItem {
+    display: flex;
+    align-items: center;
+    min-height: 2.5rem;
+    border-radius: var(--radius-md);
+    padding: 0.5rem 0.75rem;
+    cursor: default;
+    user-select: none;
+    outline: none;
+    color: var(--foreground);
+  }
+
+  .SearchOptionItem[data-highlighted] {
+    background: var(--accent);
+    color: var(--accent-foreground);
+  }
+
+  .SearchItemContent {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .SearchItemTitle {
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+
+  .SearchItemExcerpt {
+    font-size: 0.75rem;
+    color: var(--muted-foreground);
+    line-height: 1.25;
+  }
+
+  .SearchOptionItem[data-highlighted] .SearchItemExcerpt {
+    color: color-mix(in oklch, var(--accent-foreground) 80%, transparent);
+  }
+
+  .SearchEmptyState {
+    padding: 2rem 0.75rem;
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+  }
+
+  .SearchFooter {
+    border-top: 1px solid var(--border);
+    padding: 0.5rem 0.75rem;
+    display: flex;
+    font-size: 0.75rem;
+    color: var(--muted-foreground);
+  }
+
+  .SearchFooterHint {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .SearchFooterEnter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--muted);
+  }
+}

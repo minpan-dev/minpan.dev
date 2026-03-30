@@ -1,0 +1,7 @@
+{
+  "name": "minpan.dev",
+  "compatibility_date": "2026-03-30", // 更新为你部署当天的日期
+  "assets": {
+    "directory": "./dist",
+  },
+}

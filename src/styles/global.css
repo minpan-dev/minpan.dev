@@ -1,0 +1,309 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/geist";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-heading: var(--font-sans);
+  --font-sans: "Geist Variable", system-ui, sans-serif;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+
+  /* Layout tokens */
+  --header-height: 4rem;
+  --breakpoint-max-layout-width: 89rem;
+  --layout-background: var(--muted);
+  --layout-content: var(--background);
+
+  /* Semantic colors — inspired by docs */
+  --color-gridline: oklch(0.916 0.01 264);
+  --color-selection: oklch(0.8 0.5 264 / 25%);
+
+  /* Animation easings */
+  --ease-out-fast: cubic-bezier(0.45, 1.005, 0, 1.005);
+  --ease-in-slow: cubic-bezier(0.375, 0.015, 0.545, 0.455);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+  --layout-background: var(--background);
+  --layout-content: var(--background);
+
+  /* Dark mode semantic overrides */
+  --color-gridline: oklch(0.24 0.01 264);
+  --color-selection: oklch(0.5 0.5 264 / 40%);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    @apply font-sans;
+    word-break: break-word;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-synthesis: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Stable scrollbar — prevents layout shift */
+    overflow-y: scroll;
+  }
+
+  /* Text selection color */
+  ::selection {
+    background-color: var(--color-selection);
+  }
+
+  body:has(.RootLayout) {
+    position: relative;
+    min-width: 320px;
+    background-color: var(--layout-background);
+    color: var(--foreground);
+  }
+}
+
+@layer components {
+  .RootLayout {
+    z-index: 0;
+    position: relative;
+    --root-layout-padding-x: 0rem;
+    padding-inline: var(--root-layout-padding-x);
+  }
+
+  @media (min-width: 64rem) {
+    .RootLayout {
+      --root-layout-padding-x: 3rem;
+    }
+
+    .RootLayout::before,
+    .RootLayout::after {
+      content: "";
+      position: absolute;
+      background-color: var(--color-gridline);
+      height: 1px;
+      right: 0;
+      left: 0;
+    }
+
+    .RootLayout::before {
+      top: var(--header-height);
+      margin-top: -1px;
+    }
+
+    .RootLayout::after {
+      bottom: var(--header-height);
+      margin-bottom: -1px;
+    }
+  }
+
+  .RootLayoutContainer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin-inline: auto;
+    min-height: 100dvh;
+    max-width: calc(
+      var(--breakpoint-max-layout-width) - var(--root-layout-padding-x) * 2
+    );
+  }
+
+  @media (min-width: 64rem) {
+    .RootLayoutContainer {
+      padding-block: var(--header-height);
+    }
+
+    .RootLayoutContainer::before,
+    .RootLayoutContainer::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background-color: var(--color-gridline);
+    }
+
+    .RootLayoutContainer::before {
+      left: 0;
+      margin-left: -1px;
+    }
+
+    .RootLayoutContainer::after {
+      right: 0;
+      margin-right: -1px;
+    }
+  }
+
+  .RootLayoutContent {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    background-color: var(--layout-content);
+  }
+
+  @media (min-width: 64rem) {
+    .RootLayoutFooter {
+      background-color: var(--layout-background);
+      width: 100%;
+      height: var(--header-height);
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+
+    /* Footer mirrors Header: absolute-positioned in the bottom zone */
+    .Footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: var(--header-height);
+      display: flex;
+      align-items: center;
+      padding-inline: 1.5rem;
+      padding-block: 0;
+      border-top: none;
+      z-index: 1;
+    }
+  }
+}
+
+/* ── Shiki syntax highlighting (dual themes, class-based dark mode) ─────── */
+
+html:not(.dark) .astro-code {
+  background-color: var(--muted) !important;
+}
+
+html:not(.dark) .astro-code span {
+  color: var(--shiki-light) !important;
+  font-style: var(--shiki-light-font-style) !important;
+  font-weight: var(--shiki-light-font-weight) !important;
+  text-decoration: var(--shiki-light-text-decoration) !important;
+}
+
+.dark .astro-code {
+  background-color: var(--shiki-dark-bg) !important;
+}
+
+.dark .astro-code span {
+  color: var(--shiki-dark) !important;
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+  text-decoration: var(--shiki-dark-text-decoration) !important;
+}
+
+.astro-code {
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  font-size: 0.875em;
+  line-height: 1.7;
+}

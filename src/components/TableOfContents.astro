@@ -1,0 +1,197 @@
+---
+import type { MarkdownHeading } from "astro"
+
+interface Props {
+  headings: MarkdownHeading[]
+  variant?: "mobile" | "desktop" | "both"
+}
+
+const { headings, variant = "both" } = Astro.props
+const items = headings.filter((h) => h.depth >= 2 && h.depth <= 3)
+const showMobile = variant === "mobile" || variant === "both"
+const showDesktop = variant === "desktop" || variant === "both"
+---
+
+{
+  items.length > 1 && (
+    <>
+      {/* Mobile: collapsible details */}
+      {showMobile && (
+        <details class="toc-mobile lg:hidden">
+          <summary class="toc-mobile-summary">On this page</summary>
+          <nav aria-label="Table of contents">
+            <ul class="toc-list">
+              {items.map((h) => (
+                <li class:list={["toc-item", h.depth === 3 && "toc-item-h3"]}>
+                  <a href={`#${h.slug}`} class="toc-link">
+                    {h.text}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </details>
+      )}
+
+      {/* Desktop: sticky sidebar */}
+      {showDesktop && (
+        <nav
+          class="toc-sidebar hidden lg:block"
+          aria-label="Table of contents"
+          data-toc
+        >
+          <p class="toc-title">On this page</p>
+          <ul class="toc-list">
+            {items.map((h) => (
+              <li class:list={["toc-item", h.depth === 3 && "toc-item-h3"]}>
+                <a href={`#${h.slug}`} class="toc-link" data-toc-link>
+                  {h.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
+    </>
+  )
+}
+
+<style>
+  .toc-mobile {
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  .toc-mobile-summary {
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--muted-foreground);
+    user-select: none;
+    list-style: none;
+  }
+
+  .toc-mobile-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .toc-mobile-summary::after {
+    content: " ▾";
+    font-size: 0.75rem;
+  }
+
+  details[open] .toc-mobile-summary::after {
+    content: " ▴";
+  }
+
+  .toc-mobile .toc-list {
+    margin-top: 0.5rem;
+  }
+
+  .toc-sidebar {
+    position: sticky;
+    top: 5rem;
+    width: 14rem;
+    max-height: calc(100dvh - 8rem);
+    overflow-y: auto;
+    font-size: 0.8125rem;
+    flex-shrink: 0;
+  }
+
+  .toc-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted-foreground);
+    margin-bottom: 0.625rem;
+  }
+
+  .toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+
+  .toc-item {
+    line-height: 1.4;
+  }
+
+  .toc-item-h3 {
+    padding-left: 0.75rem;
+  }
+
+  .toc-link {
+    display: block;
+    padding: 0.25rem 0.375rem;
+    border-radius: calc(var(--radius) - 2px);
+    color: var(--muted-foreground);
+    text-decoration: none;
+    transition:
+      color 0.15s,
+      background-color 0.15s;
+  }
+
+  .toc-link:hover {
+    color: var(--foreground);
+    background-color: var(--accent);
+  }
+
+  .toc-link[data-active] {
+    color: var(--primary);
+    font-weight: 500;
+  }
+</style>
+
+<script>
+  function setupTocScrollSpy() {
+    const nav = document.querySelector<HTMLElement>("[data-toc]")
+    if (!nav) return
+
+    const links = Array.from(
+      nav.querySelectorAll<HTMLAnchorElement>("[data-toc-link]")
+    )
+    if (!links.length) return
+
+    const headingIds = links.map((a) => a.getAttribute("href")?.slice(1) ?? "")
+    const headings = headingIds
+      .map((id) => document.getElementById(id))
+      .filter(Boolean) as HTMLElement[]
+
+    let current = ""
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            current = entry.target.id
+          }
+        }
+        links.forEach((a) => {
+          const href = a.getAttribute("href")?.slice(1)
+          if (href === current) {
+            a.setAttribute("data-active", "")
+          } else {
+            a.removeAttribute("data-active")
+          }
+        })
+      },
+      { rootMargin: "0px 0px -60% 0px", threshold: 0 }
+    )
+
+    headings.forEach((h) => observer.observe(h))
+
+    return () => observer.disconnect()
+  }
+
+  setupTocScrollSpy()
+  document.addEventListener("astro:after-swap", setupTocScrollSpy)
+</script>

@@ -1,0 +1,31 @@
+---
+import type { HTMLAttributes } from "astro/types"
+import { cn } from "@/utils/cn"
+
+interface Props extends HTMLAttributes<"main"> {
+  pagefindBody?: boolean
+  size?: "content" | "wide" | "full"
+}
+
+const {
+  class: className,
+  pagefindBody = false,
+  size = "wide",
+  ...rest
+} = Astro.props
+
+const sizeClass = {
+  content: "max-w-3xl",
+  wide: "max-w-5xl",
+  full: "max-w-none",
+}[size]
+---
+
+<main
+  id="main-content"
+  class={cn("mx-auto w-full flex-1 px-4 sm:px-6", sizeClass, className)}
+  {...pagefindBody && { "data-pagefind-body": true }}
+  {...rest}
+>
+  <slot />
+</main>
