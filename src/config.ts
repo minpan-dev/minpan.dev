@@ -52,6 +52,11 @@ export type SocialLink = {
 
 export const SOCIALS: SocialLink[] = [
   {
+    name: "RSS",
+    href: "/rss.xml",
+    active: true,
+  },
+  {
     name: "GitHub",
     href: "https://github.com/minpan-dev",
     active: true,

@@ -6,6 +6,7 @@ interface Props {
 }
 
 const { title, url, description = "" } = Astro.props
+import { SiGmail, SiInstagram, SiReddit, SiX } from "react-icons/si"
 
 const encodedTitle = encodeURIComponent(title)
 const encodedUrl = encodeURIComponent(url)
@@ -13,54 +14,49 @@ const encodedDesc = encodeURIComponent(description)
 
 const links = [
   {
-    name: "Twitter",
-    href: `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`,
-    icon: `<path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/>`,
+    name: "X",
+    href: `https://x.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`,
+    icon: SiX,
   },
   {
-    name: "LinkedIn",
-    href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
-    icon: `<path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/>`,
+    name: "Instagram",
+    href: `https://www.instagram.com/sharing/share-offsite/?url=${encodedUrl}`,
+    icon: SiInstagram,
   },
   {
     name: "Reddit",
     href: `https://www.reddit.com/submit?title=${encodedTitle}&url=${encodedUrl}`,
-    icon: `<circle cx="12" cy="12" r="10"/><path d="M18 12a1.5 1.5 0 0 0-2.47-1.14 7.35 7.35 0 0 0-3.53-1.1l.66-3.1 2.14.45a1 1 0 1 0 .13-.65l-2.4-.5a.5.5 0 0 0-.6.37l-.73 3.47a7.14 7.14 0 0 0-3.73 1.1A1.5 1.5 0 0 0 6 12a1.5 1.5 0 0 0 .67 1.25 3 3 0 0 0-.05.55c0 2.77 3.18 5.02 7.1 5.02s7.1-2.25 7.1-5.02a3 3 0 0 0-.04-.55A1.5 1.5 0 0 0 18 12Zm-9 1.5a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm5.65 2.85a4.3 4.3 0 0 1-2.65.8 4.3 4.3 0 0 1-2.65-.8.25.25 0 0 1 .35-.35c.6.45 1.45.7 2.3.7s1.7-.25 2.3-.7a.25.25 0 0 1 .35.36ZM13 13.5a1 1 0 1 1 2 0 1 1 0 0 1-2 0Z"/>`,
+    icon: SiReddit,
   },
   {
-    name: "Email",
+    name: "Gmail",
     href: `mailto:?subject=${encodedTitle}&body=${encodedDesc}%0A%0A${encodedUrl}`,
-    icon: `<rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>`,
+    icon: SiGmail,
   },
 ]
 ---
 
 <div class="mt-8 border-t border-border pt-6">
   <span class="text-sm text-muted-foreground">Share this post:</span>
-  <div class="mt-3 flex items-center gap-3">
+  <ul aria-label="Share options" class="mt-3 flex items-center gap-3">
     {
-      links.map((link) => (
-        <a
-          href={link.href}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex items-center justify-center rounded-md border border-border p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
-          aria-label={`Share on ${link.name}`}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            set:html={link.icon}
-          />
-        </a>
-      ))
+      links.map((link) => {
+        const Icon = link.icon
+
+        return (
+          <li>
+            <a
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center justify-center rounded-md border border-border p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+              aria-label={`Share on ${link.name}`}
+            >
+              <Icon size={16} aria-hidden="true" />
+            </a>
+          </li>
+        )
+      })
     }
-  </div>
+  </ul>
 </div>
