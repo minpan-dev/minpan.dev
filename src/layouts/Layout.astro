@@ -28,6 +28,7 @@ const socialImageURL = ogImage?.startsWith("http")
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.json" />
     <link rel="canonical" href={canonicalURL} />
 
     <!-- Primary Meta Tags -->
@@ -47,7 +48,7 @@ const socialImageURL = ogImage?.startsWith("http")
     <meta property="og:site_name" content={SITE.title} />
     <meta
       property="og:locale"
-      content={SITE.lang === "zh" ? "zh_CN" : "en_US"}
+      content={(SITE.lang as string) === "zh" ? "zh_CN" : "en_US"}
     />
 
     <!-- Twitter -->

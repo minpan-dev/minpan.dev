@@ -1,8 +1,8 @@
 import { Moon, Sun } from "lucide-react"
-import { useState } from "react"
+import { memo, useState } from "react"
 import { Switch } from "@/components/ui/switch"
 
-export default function ThemeToggle() {
+function ThemeToggle() {
   const [theme, setTheme] = useState<"light" | "dark">(() => {
     if (typeof document !== "undefined") {
       return document.documentElement.classList.contains("dark")
@@ -20,7 +20,7 @@ export default function ThemeToggle() {
   }
 
   return (
-    <div className="flex items-center space-x-2">
+    <div className="flex items-center gap-2">
       <Sun className="h-4 w-4 text-muted-foreground" />
       <Switch
         checked={theme === "dark"}
@@ -31,3 +31,5 @@ export default function ThemeToggle() {
     </div>
   )
 }
+
+export default memo(ThemeToggle)

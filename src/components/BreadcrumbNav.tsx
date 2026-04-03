@@ -6,12 +6,13 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
+import { memo } from "react"
 
 interface BreadcrumbNavProps {
   title: string
 }
 
-export default function BreadcrumbNav({ title }: BreadcrumbNavProps) {
+function BreadcrumbNav({ title }: BreadcrumbNavProps) {
   return (
     <BreadcrumbRoot className="mb-6">
       <BreadcrumbList>
@@ -30,3 +31,5 @@ export default function BreadcrumbNav({ title }: BreadcrumbNavProps) {
     </BreadcrumbRoot>
   )
 }
+
+export default memo(BreadcrumbNav)

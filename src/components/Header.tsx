@@ -29,7 +29,7 @@ export default function Header({
     <>
       <header className="Header">
         <nav className="HeaderInner" aria-label="Main navigation">
-          <a href="/" className="HeaderLogoLink">
+          <a href="/" className="HeaderLogoLink" data-astro-prefetch>
             {SITE.title}
           </a>
 
@@ -39,6 +39,7 @@ export default function Header({
                 key={href}
                 href={href}
                 className="HeaderNavLink"
+                data-astro-prefetch
                 {...(active ? { "data-active": "" } : {})}
               >
                 {label}

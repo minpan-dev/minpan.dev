@@ -3,11 +3,17 @@ import Layout from "@/layouts/Layout.astro"
 import Main from "@/layouts/Main.astro"
 import Header from "@/components/Header.tsx"
 import Footer from "@/components/Footer.astro"
+import { getCollection } from "astro:content"
+
+const recentPosts = (await getCollection("blog"))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.pubDatetime.getTime() - a.data.pubDatetime.getTime())
+  .slice(0, 3)
 ---
 
 <Layout title="Page Not Found">
   <Header currentPath={Astro.url.pathname} client:load />
-  <Main class="flex flex-col items-center justify-center py-16" size="content">
+  <Main class="flex flex-col items-center py-16" size="content">
     <h1
       class="animate-[fadeInUp_0.5s_ease_forwards] text-7xl font-bold text-foreground opacity-0"
     >
@@ -23,26 +29,82 @@ import Footer from "@/components/Footer.astro"
     >
       The page you're looking for doesn't exist or has been moved.
     </p>
-    <a
-      href="/"
-      class="mt-8 inline-flex animate-[fadeInUp_0.5s_ease_0.3s_forwards] items-center gap-2 rounded-md border border-border px-4 py-2 text-sm font-medium opacity-0 transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+
+    <div
+      class="mt-8 flex animate-[fadeInUp_0.5s_ease_0.3s_forwards] flex-wrap justify-center gap-3 opacity-0"
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+      <a
+        href="/"
+        class="inline-flex items-center gap-2 rounded-md border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
       >
-        <path d="m12 19-7-7 7-7"></path>
-        <path d="M19 12H5"></path>
-      </svg>
-      Go back home
-    </a>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="m12 19-7-7 7-7"></path>
+          <path d="M19 12H5"></path>
+        </svg>
+        Go back home
+      </a>
+      <a
+        href="/posts/"
+        class="inline-flex items-center gap-2 rounded-md border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+      >
+        Browse all posts
+      </a>
+      <a
+        href="/tags/"
+        class="inline-flex items-center gap-2 rounded-md border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+      >
+        Explore tags
+      </a>
+    </div>
+
+    {
+      recentPosts.length > 0 && (
+        <div class="mt-12 w-full animate-[fadeInUp_0.5s_ease_0.4s_forwards] opacity-0">
+          <p class="mb-4 text-sm font-medium text-muted-foreground">
+            Recent posts
+          </p>
+          <ul class="flex flex-col gap-3">
+            {recentPosts.map((post) => (
+              <li>
+                <a
+                  href={`/posts/${post.id}/`}
+                  class="group flex items-center justify-between rounded-md border border-border px-4 py-3 transition-colors hover:bg-accent hover:text-accent-foreground"
+                >
+                  <span class="text-sm font-medium">{post.data.title}</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="shrink-0 opacity-0 transition-opacity group-hover:opacity-100"
+                    aria-hidden="true"
+                  >
+                    <path d="M5 12h14" />
+                    <path d="m12 5 7 7-7 7" />
+                  </svg>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
   </Main>
   <Footer />
 </Layout>
