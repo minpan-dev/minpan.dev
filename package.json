@@ -51,7 +51,6 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@pagefind/default-ui": "^1.4.0",
-    "@types/dompurify": "^3.2.0",
     "eslint": "^10.1.0",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.5.2",
