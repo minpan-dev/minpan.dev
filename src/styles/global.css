@@ -279,7 +279,7 @@
 /* ── Shiki syntax highlighting (dual themes, class-based dark mode) ─────── */
 
 html:not(.dark) .astro-code {
-  background-color: var(--muted) !important;
+  background-color: var(--shiki-light-bg) !important;
 }
 
 html:not(.dark) .astro-code span {
