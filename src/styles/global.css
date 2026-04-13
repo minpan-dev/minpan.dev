@@ -86,7 +86,7 @@
   /* Layout tokens */
   --header-height: 4rem;
   --breakpoint-max-layout-width: 89rem;
-  --layout-background: var(--muted);
+  --layout-background: var(--background);
   --layout-content: var(--background);
 
   /* Semantic colors — inspired by docs */
