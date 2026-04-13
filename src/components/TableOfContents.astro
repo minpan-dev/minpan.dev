@@ -95,12 +95,14 @@ const showDesktop = variant === "desktop" || variant === "both"
 
   .toc-sidebar {
     position: sticky;
-    top: 5rem;
+    top: calc(var(--header-height) + 1rem);
     width: 14rem;
-    max-height: calc(100dvh - 8rem);
+    max-height: calc(100dvh - var(--header-height) - 2rem);
     overflow-y: auto;
     font-size: 0.8125rem;
     flex-shrink: 0;
+    align-self: flex-start;
+    scrollbar-gutter: stable;
   }
 
   .toc-title {
